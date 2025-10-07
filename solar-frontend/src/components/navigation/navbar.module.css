@@ -1,0 +1,78 @@
+.navbar {
+  padding: 24px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .nav_left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo_container {
+    background-color: #7fff00;
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+
+    .lucide_icon {
+      padding: 2px;
+      margin: 6px 6px 6px 7px;
+      align-items: center;
+    }
+  }
+  span {
+    font-size: 18px;
+    font-weight: 600;
+    font-family: "Inter";
+  }
+  .nav_right {
+    display: flex;
+    gap: 48px;
+
+    .dashboard_container {
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+
+      .lucide_icon {
+        padding: 4px;
+        margin: 4px;
+        object-position: center;
+      }
+      span {
+        font-size: 14px;
+        font-weight: 500;
+        font-family: "Inter";
+      }
+    }
+
+    .user_profile {
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+      gap: 10px;
+
+      .logo_container {
+        background-color: #65a0da;
+        border-radius: 50%;
+        height: 32px;
+        width: 32px;
+
+        .logo {
+          display: flex;
+          justify-content: center;
+          justify-items: center;
+          margin-top: 6px;
+          color: white;
+        }
+      }
+      span {
+        font-size: 14px;
+        font-weight: 500;
+        font-family: "Inter";
+      }
+    }
+  }
+}
