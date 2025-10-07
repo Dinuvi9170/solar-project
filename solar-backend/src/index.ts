@@ -1,8 +1,8 @@
 import 'dotenv/config';
 import express from 'express';
-import SolarUnitRouter from './api/solar-unit.js';
-import { connectDB } from './infrastructure/db.js';
-import EnergyRecordRouter from './api/energyRecords.js';
+import SolarUnitRouter from './api/solar-unit';
+import { connectDB } from './infrastructure/db';
+import EnergyRecordRouter from './api/energyRecords';
 
 const server= express();
 server.use(express.json());// convert structured data into json

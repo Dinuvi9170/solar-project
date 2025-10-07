@@ -2,19 +2,19 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
 
-import { connectDB } from './infrastructure/db.js';
-import { SolarUnit } from "./infrastructure/entity/solar-units.js";
-import { EnergyGenerationRecord } from "./infrastructure/entity/energyGenerationRecords.js";
+import { connectDB } from './infrastructure/db';
+import { SolarUnit } from "./infrastructure/entity/solar-units";
+import { EnergyGenerationRecord } from "./infrastructure/entity/energyGenerationRecords";
 
 const seedData = async () => {
   try {
     await connectDB();
-    console.log("✅ MongoDB connected");
+    console.log(" MongoDB connected");
 
     // Clear both collections
     await mongoose.connection.collection("solarunits").deleteMany({});
     await mongoose.connection.collection("energyrecords").deleteMany({});
-    console.log("🗑️ Existing data cleared");
+    console.log(" Existing data cleared");
 
     // Create sample SolarUnit first
     const sampleSolarUnit = new SolarUnit({
@@ -36,12 +36,12 @@ const seedData = async () => {
 
     await EnergyGenerationRecord.insertMany(energyRecordsData);
 
-    console.log("🌞 Sample Solar Unit and Energy Records inserted successfully");
+    console.log(" Sample Solar Unit and Energy Records inserted successfully");
 
     await mongoose.disconnect();
-    console.log("🔌 MongoDB disconnected");
+    console.log(" MongoDB disconnected");
   } catch (error) {
-    console.error("❌ Error seeding data:", error);
+    console.error(" Error seeding data:", error);
     process.exit(1);
   }
 };
