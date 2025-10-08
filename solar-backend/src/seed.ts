@@ -5,6 +5,7 @@ dotenv.config();
 import { connectDB } from './infrastructure/db';
 import { SolarUnit } from "./infrastructure/entity/solar-units";
 import { EnergyGenerationRecord } from "./infrastructure/entity/energyGenerationRecords";
+import {User} from "./infrastructure/entity/user";
 
 const seedData = async () => {
   try {
@@ -14,7 +15,15 @@ const seedData = async () => {
     // Clear both collections
     await mongoose.connection.collection("solarunits").deleteMany({});
     await mongoose.connection.collection("energyrecords").deleteMany({});
+    await mongoose.connection.collection("users").deleteMany({});
     console.log(" Existing data cleared");
+
+    //create and save user
+    const sampleUser= [
+        {name:"Alice Johnson", email:"alice@gmail.com",createdAt:new Date("2025-10-10T06:00:00.000Z")},
+        {name:"Bob Smith", email:"bob@gmail.com",createdAt:new Date("2025-10-11T06:00:00.000Z")}
+    ];
+    const users= await User.insertMany(sampleUser);
 
     // Create sample SolarUnit first
     const sampleSolarUnit = new SolarUnit({
@@ -22,7 +31,7 @@ const seedData = async () => {
       installationDate: new Date("2025-9-10"),
       capasity: 5000,
       status: "ACTIVE",
-      houseId: new mongoose.Types.ObjectId()
+      userId: users[0]._id
     });
 
     const savedSolarUnit = await sampleSolarUnit.save();

@@ -1,12 +1,13 @@
 //import { dataUnits } from "../infrastructure/data.js";
 //import {v4 as uuid} from 'uuid';
+import { CreateSolarUnitDto } from "../domain/dtos/solar-unit";
 import { SolarUnit } from "../infrastructure/entity/solar-units";
 import {Request,Response} from "express";
 
 export const getAllUnits= async (req:Request,res:Response)=>{
     try{
         const dataUnits = await SolarUnit.find();
-        res.status(200).json(dataUnits); 
+        res.status(200).json({message:"fetched",dataUnits});
     }catch(error){
         console.error(error)
         res.status(500).json({message:"Internal server error"});
@@ -16,12 +17,16 @@ export const getAllUnits= async (req:Request,res:Response)=>{
 
 export const createSolarUnit= async(req:Request,res:Response)=>{
     try{
-        const {installationDate,capasity,serialNumber,status}= req.body;
+        const result= CreateSolarUnitDto.safeParse(req.body);
+        if(!result.success){
+            return res.status(400).json({message:result.error.message});
+        }
         const newSolarUnit={
-            installationDate,
-            capasity,
-            serialNumber,
-            status
+            installationDate:new Date(result.data.installationDate),
+            capasity:result.data.capasity,
+            serialNumber:result.data.serialNumber,
+            status:result.data.status,
+            userId:result.data.userId
         };
 
         const createdSolarUnit=await SolarUnit.create(newSolarUnit);
