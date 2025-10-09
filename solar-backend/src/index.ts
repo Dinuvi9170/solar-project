@@ -4,6 +4,7 @@ import SolarUnitRouter from './api/solar-unit';
 import { connectDB } from './infrastructure/db';
 import EnergyRecordRouter from './api/energyRecords';
 import { LoggerMiddleware } from './api/middleware/logger';
+import { ErrorHandlingMiddleware } from './api/middleware/errorHandling';
 
 const server= express();
 server.use(express.json());// convert structured data into json
@@ -12,6 +13,8 @@ server.use(LoggerMiddleware);
 
 server.use("/api/solar-units",SolarUnitRouter);
 server.use("/api/energyRecords",EnergyRecordRouter);
+
+server.use(ErrorHandlingMiddleware);
 
 connectDB();
 const PORT=8002;
