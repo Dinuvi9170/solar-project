@@ -1,6 +1,6 @@
 //import { dataUnits } from "../infrastructure/data.js";
 //import {v4 as uuid} from 'uuid';
-import { CreateSolarUnitDto } from "../domain/dtos/solar-unit";
+import { CreateSolarUnitDto, UpdateSolarUnitDto } from "../domain/dtos/solar-unit";
 import { SolarUnit } from "../infrastructure/entity/solar-units";
 import {Request,Response} from "express";
 
@@ -54,17 +54,24 @@ export const getUnitId= async (req:Request,res:Response)=>{
 export const updateSolarunit= async (req:Request,res:Response)=>{
     try{
         const {id} =req.params;
-        const {installationDate,capasity,serialNumber,status}= req.body;
+        const result= UpdateSolarUnitDto.safeParse(req.body);
 
+        if(!result.success){
+            return res.status(400).json({message:result.error.message});
+        }
         const solarUnit= await SolarUnit.findById(id);
 
         if(solarUnit){ 
-            const updateSolarUnit = await SolarUnit.findByIdAndUpdate(id,{
-                installationDate,
-                capasity,
-                serialNumber,
-                status
-            });
+            const updateData:any={};
+            if(result.data.installationDate)
+                updateData.installationDate=new Date(result.data.installationDate);
+            if(result.data.capasity)
+                updateData.capasity=result.data.capasity;
+            if(result.data.serialNumber)
+                updateData.serialNumber=result.data.serialNumber;
+            if(result.data.status)
+                updateData.status=result.data.status;
+            const updateSolarUnit = await SolarUnit.findByIdAndUpdate(id,updateData,{new:true,runValidators: true});
             return res.status(200).json(updateSolarUnit);
         }else{
             return res.status(404).json({message:"Solar unit not found"});
