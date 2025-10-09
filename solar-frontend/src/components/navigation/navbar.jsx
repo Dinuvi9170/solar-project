@@ -1,10 +1,11 @@
 //import s from "./navbar.module.css";
+import { Link } from "react-router-dom";
 const Navigation =()=>{
     const user="JD";
 
     return (
         <nav className={"px-12 py-6 flex items-center justify-between "}>
-            <div className={"flex items-center gap-3"}>
+            <Link to="/" className={"flex items-center gap-3"}>
                 <div className={"bg-[#7fff00] rounded-full w-10 h-10"}>
                     <svg 
                         xmlns="http://www.w3.org/2000/svg" 
@@ -24,9 +25,9 @@ const Navigation =()=>{
                     </svg>
                 </div>
                 <span className={"text-lg font-semibold font-[Inter]"}>Aelora</span>
-            </div>
+            </Link>
             <div className={"flex  gap-12"}>
-                <div className={"flex items-center px-3 py-2"}>
+                <Link to="/dashboard" className={"flex items-center px-3 py-2"}>
                     <svg 
                         xmlns="http://www.w3.org/2000/svg" 
                         width="24" 
@@ -44,7 +45,7 @@ const Navigation =()=>{
                         <path d="M8 17v-3"/>
                     </svg>
                     <span className={"text-sm weight-medium font-[Inter]"}>Dashboard</span>
-                </div>
+                </Link>
                 <div className={"flex items-center px-3 py-2 gap-[10px]" }>
                     <div className={"bg-[#65a0da] rounded-full h-8 w-8"}>
                         <span className={"flex justify-center items-center mt-1 text-white"}>{user}</span>

@@ -11,8 +11,8 @@ const Footer = ()=>{
                         <div className='text-xl font-bold text-blue-600'>Smart Energy</div>
                     </div>
                     <span className='block'>Revolutionizing wind farm management</span>
-                    <span className='block'> through advanced digital twin technology and </span>
-                    <span className='block'>predictive insights.</span>
+                    <span className='block'> through advanced digital twin technology </span>
+                    <span className='block'>and predictive insights.</span>
                     <div className='flex gap-1 mt-5'>
                         <div className='px-1 py-1 bg-gray-200 w-8 h-8 rounded-full'>
                             <Facebook className='w-6 h-6'/>

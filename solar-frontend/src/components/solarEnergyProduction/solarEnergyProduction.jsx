@@ -1,6 +1,6 @@
 import { useState } from "react";
-import EnergyProductionCard from "../energyProductCard";
-import Tab from "../tab";
+import EnergyProductionCard from "../../pages/home/components/energyProductCard";
+import Tab from "../../pages/home/components/tab";
 
 const SolarEnergyProduction= ()=>{
     const ProductionData=[
