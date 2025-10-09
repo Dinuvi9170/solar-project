@@ -17,7 +17,7 @@ server.use("/api/energyRecords",EnergyRecordRouter);
 server.use(ErrorHandlingMiddleware);
 
 connectDB();
-const PORT=8002;
+const PORT=process.env.PORT||8002;
 server.listen(PORT,()=>{
     console.log(`The server is running on port ${PORT} `);
 })
