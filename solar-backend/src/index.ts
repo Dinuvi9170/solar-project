@@ -5,10 +5,11 @@ import { connectDB } from './infrastructure/db';
 import EnergyRecordRouter from './api/energyRecords';
 import { LoggerMiddleware } from './api/middleware/logger';
 import { ErrorHandlingMiddleware } from './api/middleware/errorHandling';
+import cors from "cors";
 
 const server= express();
+server.use(cors({origin:"http://localhost:5173"}));
 server.use(express.json());// convert structured data into json
-
 server.use(LoggerMiddleware);
 
 server.use("/api/solar-units",SolarUnitRouter);
@@ -17,7 +18,7 @@ server.use("/api/energyRecords",EnergyRecordRouter);
 server.use(ErrorHandlingMiddleware);
 
 connectDB();
-const PORT=process.env.PORT||8002;
+const PORT=process.env.PORT||8000;
 server.listen(PORT,()=>{
     console.log(`The server is running on port ${PORT} `);
 })

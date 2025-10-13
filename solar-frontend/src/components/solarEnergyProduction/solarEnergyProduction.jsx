@@ -1,8 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EnergyProductionCard from "../../pages/home/components/energyProductCard";
 import Tab from "../../pages/home/components/tab";
+import { useGetEnergyRecordsBysolarIdQuery } from "@/lib/redux/query";
 
 const SolarEnergyProduction= ()=>{
+    //click on buttons in the cards
+    const Tabs=[{label:"All",value:"all"},
+        {label:"Anomaly",value:"anomaly"}
+    ]
+
+    const [isClickedtab, SetisClickedtab]=useState(Tabs[0].value);
+
     const ProductionData=[
         {day: "Mon", date:"Aug 19", production:"34.1", isAnomaly:false},
         {day: "Tue", date:"Aug 20", production:"30.2", isAnomaly:false},
@@ -12,14 +20,11 @@ const SolarEnergyProduction= ()=>{
         {day: "Sat", date:"Aug 24", production:"43", isAnomaly:false},
         {day: "Sun", date:"Aug 25", production:"26.8", isAnomaly:false}
     ];
-    //click on buttons in the cards
-    const Tabs=[{label:"All",value:"all"},
-        {label:"Anomaly",value:"anomaly"}
-    ]
+    
     const handleClickTab=((value)=>{
         SetisClickedtab(value)
     })
-    const [isClickedtab, SetisClickedtab]=useState(Tabs[0].value);
+    
     //filter data all or anomalies
     const filterData= ProductionData.filter((el)=>{
         if(isClickedtab==="anomaly")
@@ -33,6 +38,9 @@ const SolarEnergyProduction= ()=>{
         return sum+=Number(el.production);
 
     },0);
+    //automatically handle fetching data
+    const {data,isError,isLoading}=useGetEnergyRecordsBysolarIdQuery("68e77e07ad1ef9aeb913b8f3");
+    console.log(data)
 
     return(
         <section className={"px-18 py-6 font-[Inter]"}>
