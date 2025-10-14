@@ -7,13 +7,15 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --exec ts-node src/index.ts",
     "build": "npm install && tsc",
-    "start": "node ./dist/index.js"
+    "start": "node ./dist/index.js",
+    "seed": "npx ts-node src/seed.ts"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
     "cors": "^2.8.5",
+    "date-fns": "^4.1.0",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
     "mongodb": "^6.19.0",

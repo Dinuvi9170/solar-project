@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import {useState } from "react";
 import EnergyProductionCard from "../../pages/home/components/energyProductCard";
 import Tab from "../../pages/home/components/tab";
 import { useGetEnergyRecordsBysolarIdQuery } from "@/lib/redux/query";
+import { format, isSameDay, subDays, toDate } from "date-fns";
+import { Loader2 } from "lucide-react";
 
 const SolarEnergyProduction= ()=>{
     //click on buttons in the cards
@@ -11,36 +13,72 @@ const SolarEnergyProduction= ()=>{
 
     const [isClickedtab, SetisClickedtab]=useState(Tabs[0].value);
 
-    const ProductionData=[
-        {day: "Mon", date:"Aug 19", production:"34.1", isAnomaly:false},
-        {day: "Tue", date:"Aug 20", production:"30.2", isAnomaly:false},
-        {day: "Wed", date:"Aug 21", production:"44.7", isAnomaly:false},
-        {day: "Thu", date:"Aug 22", production:"21.9", isAnomaly:true},
-        {day: "Fri", date:"Aug 23", production:"41.2", isAnomaly:false},
-        {day: "Sat", date:"Aug 24", production:"43", isAnomaly:false},
-        {day: "Sun", date:"Aug 25", production:"26.8", isAnomaly:false}
-    ];
-    
     const handleClickTab=((value)=>{
         SetisClickedtab(value)
     })
     
+    //automatically handle fetching data
+    const {data,isError,error,isLoading}=useGetEnergyRecordsBysolarIdQuery("68ed36a4a3ecf49f08f986ea");
+    
+    if(isLoading){
+        return(
+        <div className="w-full h-[300px} py-20">
+            <div className="flex flex-col px-150 justify-center items-center">
+                <Loader2 className="w-6 h-6 animate-spin"/>
+                <span className="font-semibold text-xl animation-pulse text-gray-700">Loading...</span>
+            </div>
+        </div>)
+    }
+    if(!data || isError){
+        return(
+            <div>Error:{error.message}</div>
+        )
+    }
+    const FomattedData = data.map((el)=>{
+        return{
+            ...el,
+            time: toDate(el.time)
+        };
+    })
+    const lastrecord= FomattedData[0];
+    const sevendayago= subDays(lastrecord.time,7);
+    
+    const filteredData= FomattedData.filter((el)=>{
+         return el.time>= sevendayago        
+    })
+    const Days=[]
+    
+    for(let i = 0; i < 7; i++){
+        const day = subDays(new Date(lastrecord.time), i); 
+        const samedayData = filteredData.filter((el)=>{
+            return isSameDay(new Date (el.time),day)
+    });
+        Days.push({
+            date:day,
+            records:samedayData,
+            totalDayEnergy:samedayData.reduce(
+            (total,el)=>{
+                return total+=Number(el.energyGenerated)
+
+            },0)
+        });  
+    }
+    Days.reverse();
+    console.log( Days);
+    
+    //calculate total production
+    const total= Days.reduce((sum,day)=>{
+        return sum+=Number(day.totalDayEnergy);
+
+    },0);
+
     //filter data all or anomalies
-    const filterData= ProductionData.filter((el)=>{
+    const filterData= Days.filter((day)=>{
         if(isClickedtab==="anomaly")
-            return el.isAnomaly
+            return day.records.some((el)=>el.isAnomaly)
         else
             return true
     })
-
-    //calculate total production
-    const total= ProductionData.reduce((sum,el)=>{
-        return sum+=Number(el.production);
-
-    },0);
-    //automatically handle fetching data
-    const {data,isError,isLoading}=useGetEnergyRecordsBysolarIdQuery("68e77e07ad1ef9aeb913b8f3");
-    console.log(data)
 
     return(
         <section className={"px-18 py-6 font-[Inter]"}>
@@ -49,7 +87,7 @@ const SolarEnergyProduction= ()=>{
                 <p className="text-gray-600">Daily energy output for the past 7 days</p>
            </div>
            {/* button handling */}
-           <div className="flex gap-5 ">
+           <div className="flex gap-3 ">
                 {Tabs.map((tab)=>{
                     return(
                       <Tab
@@ -65,18 +103,18 @@ const SolarEnergyProduction= ()=>{
            <div>
                 {filterData.length===0?(
                     <div className="px-10 py-10">
-                        <p>No data available.</p>
+                        <p>No anomalies available.</p>
                     </div>
                 ):(
                     <div className="flex flex-col-7 gap-2">
-                        {filterData.map((el)=>{
+                        {filterData.map((day)=>{
                             return (
                                 <EnergyProductionCard
-                                    key={el.date}
-                                    day={el.day}
-                                    date={el.date}
-                                    production={el.production}
-                                    isAnomaly={el.isAnomaly}
+                                    key={day.date}
+                                    day={format(day.date,"EEE")}
+                                    date={format(day.date,"MMM dd")}
+                                    production={day.totalDayEnergy.toFixed(1)}
+                                    isAnomaly={day.records.some((el) => el.isAnomaly)}
                                 />
                             ); 
                         })}
