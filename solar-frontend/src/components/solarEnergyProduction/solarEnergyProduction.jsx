@@ -2,7 +2,7 @@ import {useState } from "react";
 import EnergyProductionCard from "../../pages/home/components/energyProductCard";
 import Tab from "../../pages/home/components/tab";
 import { useGetEnergyRecordsBysolarIdQuery } from "@/lib/redux/query";
-import { format, isSameDay, subDays, toDate } from "date-fns";
+import { format, subDays} from "date-fns";
 import { Loader2 } from "lucide-react";
 
 const SolarEnergyProduction= ()=>{
@@ -18,7 +18,7 @@ const SolarEnergyProduction= ()=>{
     })
     
     //automatically handle fetching data
-    const {data,isError,error,isLoading}=useGetEnergyRecordsBysolarIdQuery("68ed36a4a3ecf49f08f986ea");
+    const {data,isError,error,isLoading}=useGetEnergyRecordsBysolarIdQuery({id:"68ed36a4a3ecf49f08f986ea",groupBy:"date"});
     
     if(isLoading){
         return(
@@ -34,48 +34,30 @@ const SolarEnergyProduction= ()=>{
             <div>Error:{error.message}</div>
         )
     }
-    const FomattedData = data.map((el)=>{
-        return{
-            ...el,
-            time: toDate(el.time)
-        };
-    })
-    const lastrecord= FomattedData[0];
-    const sevendayago= subDays(lastrecord.time,7);
     
-    const filteredData= FomattedData.filter((el)=>{
-         return el.time>= sevendayago        
-    })
-    const Days=[]
-    
-    for(let i = 0; i < 7; i++){
-        const day = subDays(new Date(lastrecord.time), i); 
-        const samedayData = filteredData.filter((el)=>{
-            return isSameDay(new Date (el.time),day)
-    });
-        Days.push({
-            date:day,
-            records:samedayData,
-            totalDayEnergy:samedayData.reduce(
-            (total,el)=>{
-                return total+=Number(el.energyGenerated)
+    const Days= data.map((el)=>({
+        ...el,
+        date: new Date(el._id.date),
+        isAnomaly:false     
+    }))
 
-            },0)
-        });  
-    }
-    Days.reverse();
-    console.log( Days);
+    const lastrecord= Days[0];
+    const sevendayago= subDays(new Date(lastrecord.date),6);
+
+    const weekData= Days.filter((day)=>{
+        return day.date>=sevendayago
+    })
     
     //calculate total production
-    const total= Days.reduce((sum,day)=>{
+    const total= weekData.reduce((sum,day)=>{
         return sum+=Number(day.totalDayEnergy);
 
     },0);
 
     //filter data all or anomalies
-    const filterData= Days.filter((day)=>{
+    const filterData= weekData.filter((day)=>{
         if(isClickedtab==="anomaly")
-            return day.records.some((el)=>el.isAnomaly)
+            return day.isAnomaly
         else
             return true
     })
@@ -114,7 +96,7 @@ const SolarEnergyProduction= ()=>{
                                     day={format(day.date,"EEE")}
                                     date={format(day.date,"MMM dd")}
                                     production={day.totalDayEnergy.toFixed(1)}
-                                    isAnomaly={day.records.some((el) => el.isAnomaly)}
+                                    isAnomaly={day.isAnomaly}
                                 />
                             ); 
                         })}
