@@ -5,9 +5,9 @@ const DashboardLayout =()=>{
     return(
         <>
             <SidebarProvider>
-                <AppSidebar />
-                <main>
-                    <SidebarTrigger />
+                <AppSidebar/>
+                <main  className="bg-gray-100 w-full h-full" >
+                    <SidebarTrigger/>
                     <Outlet/>
                 </main>
             </SidebarProvider>

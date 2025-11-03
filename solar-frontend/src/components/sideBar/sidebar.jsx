@@ -40,11 +40,11 @@ const items = [
 export function AppSidebar() {
   return (
     <Sidebar>
-      <SidebarContent>
-        <SidebarGroup className="font-[Inter]">
+      <SidebarContent className='bg-white drop-shadow-xl'>
+        <SidebarGroup className="font-[Inter] px-3 py-5 ">
           <SidebarGroupLabel>
             <Link to="/" className="flex gap-2 items-center">
-                <div className="flex justify-center items-center w-10 h-10 border rounded-full border-2 border-black bg-[#7fff00]">
+                <div className="flex justify-center items-center w-8 h-8 rounded-full bg-[#7fff00]">
                     <Wind color="black" className="w-5 h-5"/>
                 </div>
                 <span className="text-xl font-bold text-black">Aelora</span>
