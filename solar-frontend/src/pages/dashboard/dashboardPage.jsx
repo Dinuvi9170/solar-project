@@ -2,13 +2,14 @@ import { Loader2, Thermometer, Wind, Zap } from "lucide-react";
 import EnergyConsumptionCard from "./components/energyConsumptionCard";
 import { useGetEnergyRecordsBysolarIdQuery } from "@/lib/redux/query";
 import { format, subDays } from "date-fns";
+import EnergyChart from "./components/energyChart";
 
 const DashboardPage =()=>{
     const {data,isLoading,isError,error}=useGetEnergyRecordsBysolarIdQuery({id:"68ed36a4a3ecf49f08f986ea", groupBy:"date"});
 
     if(isLoading){
         return(
-        <div className="w-full h-[300px} py-20">
+        <div className="w-full h-[300px] py-40 bg-white">
             <div className="flex flex-col px-150 justify-center items-center">
                 <Loader2 className="w-6 h-6 animate-spin"/>
                 <span className="font-semibold text-xl animation-pulse text-gray-700">Loading...</span>
@@ -31,7 +32,7 @@ const DashboardPage =()=>{
         return day.date>=sevendayago
     })
     return(
-        <div className="w-full h-full bg-gray-100 overflow-y-scroll">
+        <div className="w-full h-screen bg-gray-100 overflow-y-scroll">
             <div className="px-8 py-2 flex flex-col">
                 <div className="flex w-full justify-between">
                     <div className="flex flex-col">
@@ -95,7 +96,7 @@ const DashboardPage =()=>{
                         </div>
                     </div>
                 </div>
-                <div className="w-full h-[150px] bg-white rounded-lg px-5 py-3">
+                <div className="w-full h-[150px] bg-white rounded-lg px-5 py-3 mb-4">
                     <h1 className="text-lg font-bold">Last 7 Days Energy Consumption</h1>
                     <div className="grid grid-cols-7 gap-2 mt-4 justify-center items-center">
                         {weekData.map((el)=>(
@@ -107,6 +108,7 @@ const DashboardPage =()=>{
                         ))}
                     </div>
                 </div>
+                <EnergyChart/>
             </div>
         </div>
     )

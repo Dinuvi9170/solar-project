@@ -22,7 +22,7 @@ const SolarEnergyProduction= ()=>{
     
     if(isLoading){
         return(
-        <div className="w-full h-[300px} py-20">
+        <div className="w-full h-[300px] py-20">
             <div className="flex flex-col px-150 justify-center items-center">
                 <Loader2 className="w-6 h-6 animate-spin"/>
                 <span className="font-semibold text-xl animation-pulse text-gray-700">Loading...</span>
