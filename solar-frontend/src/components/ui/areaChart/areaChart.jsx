@@ -1,6 +1,6 @@
 "use client"
 
-import { TrendingUp } from "lucide-react"
+import { CalendarDays, TrendingUp } from "lucide-react"
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
 
 import {
@@ -43,7 +43,13 @@ export function ChartAreaAxes({data}) {
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              tickFormatter={(value) => format(new Date(value),"MMM dd")}
+              tickFormatter={(value) =>{
+                if(data.length>=28){
+                  return format(new Date(value),"MMM dd")
+                }else{
+                  return format(new Date(value),"EEE")
+                }
+              }}
             />
             <YAxis
               tickLine={false}
@@ -65,15 +71,15 @@ export function ChartAreaAxes({data}) {
         </ChartContainer>
       </CardContent>
       <CardFooter>
-        <div className="flex w-full items-start gap-2 text-sm">
-          <div className="grid gap-2">
-            <div className="flex items-center gap-2 leading-none font-medium">
-              Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-            </div>
-            <div className="text-muted-foreground flex items-center gap-2 leading-none">
-              January - June 2024
-            </div>
+        <div className="flex w-full justify-center items-center gap-4 text-xs">
+          <div className="flex items-center gap-1 font-medium">
+            <span className="w-3 h-3 rounded-xs bg-blue-600"/>
+            <span className="text-gray-500">Power Output</span>
           </div>
+          <div className="flex items-center gap-1 font-medium">
+            <CalendarDays color="gray" className="w-4 h-4" />
+            <span className="text-gray-500">Daily Data</span>
+          </div>  
         </div>
       </CardFooter>
     </Card>

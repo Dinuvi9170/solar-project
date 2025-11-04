@@ -1,7 +1,11 @@
+import { useState } from "react";
 import { ChartAreaAxes } from "@/components/ui/areaChart/areaChart";
 import { useGetEnergyRecordsBysolarIdQuery } from "@/lib/redux/query";
+import { Funnel } from "lucide-react";
+
 const EnergyChart =()=>{
     const {data,isLoading, isError,error}= useGetEnergyRecordsBysolarIdQuery({id:"68ed36a4a3ecf49f08f986ea",groupBy:"date"})
+    const [filterData,setfilterData]=useState(data.slice(0,7));
 
     if(isLoading){
         return(
@@ -17,14 +21,28 @@ const EnergyChart =()=>{
             <div>Error:{error.message}</div>
         )
     }
-    const last30Days= data.slice(0,30);
+    const handleSelection=(e)=>{
+        const value= e.target.value;
+        if(value==='month'){
+            setfilterData( data.slice(0,30));
+        }else{
+            setfilterData(data.slice(0,7));
+        }
+    }
 
     return(
         <div className="bg-white rounded-xl px-5 mb-4 py-3 flex flex-col justify-center">
-            <div className="flex justify-between">
+            <div className="flex justify-between items-center">
                 <h1 className="text-lg font-bold">Power Usage Chart</h1>
+                <div className="px-10 flex items-center gap-4 text-sm">
+                    <Funnel color='gray' className="w-4 h-4" />
+                    <select onChange={handleSelection} className="p-2 border-2 border-blue-500 rounded-md">
+                        <option value="week">Per Week</option>
+                        <option value='month'>Per Month</option>
+                    </select>
+                </div>
             </div>
-            <ChartAreaAxes data={last30Days} className={'-px-3'}/>
+            <ChartAreaAxes data={filterData} className={'-px-3'}/>
         </div>
     )
 }
