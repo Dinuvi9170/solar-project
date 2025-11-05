@@ -10,7 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 
 // Menu items.
 const items = [
@@ -18,26 +18,40 @@ const items = [
     title: "Dashboard",
     url: "/dashboard",
     icon: LayoutDashboard,
+    name:"dashboard",
   },
   {
     title: "Anomaly",
     url: "/dashboard/anomaly",
     icon: TriangleAlert,
+    name:"anomaly"
   },
   {
     title: "Analytics",
     url: "/dashboard/analitics",
     icon: ChartLine ,
+    name:"analytics"
   },
   {
     title: "Users",
     url: "#",
     icon: UsersRound,
+    name:"users"
   },
   
 ]
 
 export function AppSidebar() {
+  const location =useLocation()
+  const path= location.pathname;
+
+  const Setclass=(url)=>{
+      if(path===url){
+        return "bg-blue-100"
+      }else{
+        return "bg-white"
+      }
+  }
   return (
     <Sidebar>
       <SidebarContent className='bg-white drop-shadow-xl'>
@@ -55,7 +69,7 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title} className="flex">
                   <SidebarMenuButton asChild>
-                    <Link to={item.url}>
+                    <Link to={item.url} className={`${Setclass(item.url)}`}>
                       <item.icon className="w-8 h-8" size={50}/>
                       <span>{item.title}</span>
                     </Link>

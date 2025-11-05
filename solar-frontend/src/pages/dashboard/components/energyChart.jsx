@@ -7,7 +7,6 @@ const EnergyChart =()=>{
     const {data:dailydata,isLoading, isError,error}= useGetEnergyRecordsBysolarIdQuery({id:"68ed36a4a3ecf49f08f986ea",groupBy:"date"})
     const {data:hourlydata}= useGetEnergyRecordsBysolarIdQuery({id:"68ed36a4a3ecf49f08f986ea",groupBy:"hour"})
     const [filterData,setfilterData]=useState(dailydata.slice(0,7));
-    console.log(hourlydata)
 
     if(isLoading){
         return(
@@ -44,9 +43,9 @@ const EnergyChart =()=>{
                 <h1 className="text-lg font-bold">Power Usage Chart</h1>
                 <div className="px-10 flex items-center gap-4 text-sm">
                     <Funnel color='gray' className="w-4 h-4" />
-                    <select onChange={handleSelection} className="p-2 border-2 border-blue-500 rounded-md">
+                    <select onChange={handleSelection} defaultValue="week" className="p-2 border-2 border-blue-500 rounded-md">
                         <option value="day">Per Day</option>
-                        <option value="week" selected>Per Week</option>
+                        <option value="week">Per Week</option>
                         <option value='month'>Per Month</option>
                     </select>
                 </div>

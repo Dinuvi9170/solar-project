@@ -4,6 +4,7 @@ import DashboardPage from "./pages/dashboard/dashboardPage";
 import Layout from "./layout/layout";
 import RootLayout from "./layout/rootLayout";
 import DashboardLayout from "./layout/dashboardlayout";
+import Anomaly from "./pages/anomaly/anomaly";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           </Route>
           <Route element={ <DashboardLayout/> } >  
             <Route path="/dashboard" element={ <DashboardPage/> } />
+            <Route path="/dashboard/anomaly" element={ <Anomaly/> } />
           </Route> 
         </Route>
       </Routes>
