@@ -36,7 +36,7 @@ export function ChartAreaAxes({data}) {
     }
     return false
   }
-  
+
   return (
     <Card className={'shadow-none border-none'}>
       <CardContent >
@@ -93,7 +93,7 @@ export function ChartAreaAxes({data}) {
           </div>
           <div className="flex items-center gap-1 font-medium">
             <CalendarDays color="gray" className="w-4 h-4" />
-            <span className="text-gray-500">Daily Data</span>
+            <span className="text-gray-500">{sameDay()?"Hourly Data":(data.length===7)?"Daily Data":"Daily Data(30 days)"}</span>
           </div>  
         </div>
       </CardFooter>
