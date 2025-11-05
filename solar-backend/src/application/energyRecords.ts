@@ -28,6 +28,21 @@ export const getEnergyRecordsBySolarid= async (req:Request,res:Response,next:Nex
             ])
             res.status(200).json(energyrecord);
         }
+        if(groupBy==="hour"){
+            const energyrecord = await EnergyGenerationRecord.aggregate([
+                {$group:{
+                    _id:{
+                        date:{$dateToString:{format: "%Y-%m-%d", date: "$time"}},
+                        time:{$dateToString:{format: "%H:%M", date: "$time"}}
+                    },
+                    totalHourEnergy: { $sum: "$energyGenerated" }
+                    ,
+                }},{
+                    $sort:{"_id.date":-1}
+                }
+            ])
+            res.status(200).json(energyrecord);
+        }
     }catch(error){
         next(error);
     }

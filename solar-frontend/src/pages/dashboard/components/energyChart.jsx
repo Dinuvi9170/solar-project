@@ -4,8 +4,10 @@ import { useGetEnergyRecordsBysolarIdQuery } from "@/lib/redux/query";
 import { Funnel } from "lucide-react";
 
 const EnergyChart =()=>{
-    const {data,isLoading, isError,error}= useGetEnergyRecordsBysolarIdQuery({id:"68ed36a4a3ecf49f08f986ea",groupBy:"date"})
-    const [filterData,setfilterData]=useState(data.slice(0,7));
+    const {data:dailydata,isLoading, isError,error}= useGetEnergyRecordsBysolarIdQuery({id:"68ed36a4a3ecf49f08f986ea",groupBy:"date"})
+    const {data:hourlydata}= useGetEnergyRecordsBysolarIdQuery({id:"68ed36a4a3ecf49f08f986ea",groupBy:"hour"})
+    const [filterData,setfilterData]=useState(dailydata.slice(0,7));
+    console.log(hourlydata)
 
     if(isLoading){
         return(
@@ -16,7 +18,7 @@ const EnergyChart =()=>{
             </div>
         </div>)
     }
-    if(!data || isError){
+    if(!dailydata || isError){
         return(
             <div>Error:{error.message}</div>
         )
@@ -24,9 +26,15 @@ const EnergyChart =()=>{
     const handleSelection=(e)=>{
         const value= e.target.value;
         if(value==='month'){
-            setfilterData( data.slice(0,30));
+            setfilterData( dailydata.slice(0,30));
+        }else if(value==='week'){
+            setfilterData(dailydata.slice(0,7));
         }else{
-            setfilterData(data.slice(0,7));
+            const selectedDate = hourlydata?.[0]?._id?.date;
+            const sameDayData = hourlydata?.filter(
+            (el) => el._id?.date === selectedDate
+            );
+            setfilterData(sameDayData);
         }
     }
 
@@ -37,7 +45,8 @@ const EnergyChart =()=>{
                 <div className="px-10 flex items-center gap-4 text-sm">
                     <Funnel color='gray' className="w-4 h-4" />
                     <select onChange={handleSelection} className="p-2 border-2 border-blue-500 rounded-md">
-                        <option value="week">Per Week</option>
+                        <option value="day">Per Day</option>
+                        <option value="week" selected>Per Week</option>
                         <option value='month'>Per Month</option>
                     </select>
                 </div>

@@ -1,6 +1,6 @@
 "use client"
 
-import { CalendarDays, TrendingUp } from "lucide-react"
+import { CalendarDays } from "lucide-react"
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
 
 import {
@@ -24,11 +24,23 @@ export function ChartAreaAxes({data}) {
       label: "Daily Energy (kWh)",
       color: "var(--color-blue-600)",
     },
+    totalHourEnergy:{
+      label: "Hourly Energy (kWh)",
+      color: "var(--color-blue-600)",
+    }
   } 
+  const sameDay=()=>{
+    if(data && data.length>0){
+      const samedate= data.every((el)=> el._id.date===data[0]._id?.date);
+      return samedate;
+    }
+    return false
+  }
+  
   return (
     <Card className={'shadow-none border-none'}>
       <CardContent >
-        <ChartContainer config={chartConfig} className={'h-80 w-full'}>
+        <ChartContainer config={chartConfig} className={'h-60 w-full'}>
           <AreaChart
             accessibilityLayer
             data={data}
@@ -39,15 +51,18 @@ export function ChartAreaAxes({data}) {
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="_id.date"
+              dataKey= {sameDay()?"_id.time":"_id.date"} 
               tickLine={false}
               axisLine={false}
               tickMargin={8}
               tickFormatter={(value) =>{
+                if (sameDay()) return value;
                 if(data.length>=28){
                   return format(new Date(value),"MMM dd")
-                }else{
+                }else if(data.length===7){
                   return format(new Date(value),"EEE")
+                }else{
+                  return format(new Date(value),"HH:MM")
                 }
               }}
             />
@@ -60,7 +75,7 @@ export function ChartAreaAxes({data}) {
             />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <Area
-              dataKey="totalDayEnergy"
+              dataKey={!sameDay()?"totalDayEnergy":"totalHourEnergy"}
               type="natural"
               fill="var(--color-totalDayEnergy)"
               fillOpacity={0.4}
