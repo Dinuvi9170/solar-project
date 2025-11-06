@@ -3,6 +3,7 @@ import EnergyConsumptionCard from "./components/energyConsumptionCard";
 import { useGetEnergyRecordsBysolarIdQuery } from "@/lib/redux/query";
 import { format, subDays } from "date-fns";
 import WeatherData from "./components/weatherdata";
+import EnergyChart from "./components/energyChart";
 
 const DashboardPage =({SolarUnitId})=>{
     const {data,isLoading,isError,error}=useGetEnergyRecordsBysolarIdQuery({id:SolarUnitId, groupBy:"date"});
@@ -56,7 +57,7 @@ const DashboardPage =({SolarUnitId})=>{
                         ))}
                     </div>
                 </div>
-                {/* <EnergyChart/> */}
+                <EnergyChart/>
             </div>
         </div>
     )

@@ -1,12 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChartAreaAxes } from "@/components/ui/areaChart/areaChart";
 import { useGetEnergyRecordsBysolarIdQuery } from "@/lib/redux/query";
-import { Funnel } from "lucide-react";
+import { Funnel, Loader2 } from "lucide-react";
 
-const EnergyChart =()=>{
-    const {data:dailydata,isLoading, isError,error}= useGetEnergyRecordsBysolarIdQuery({id:"68ed36a4a3ecf49f08f986ea",groupBy:"date"})
+const EnergyChart =({SolarUnitId})=>{
+    const [limit,setlimit]=useState(7)
+    const {data:dailydata,isLoading, isError,error}= useGetEnergyRecordsBysolarIdQuery({
+        id:SolarUnitId,groupBy:"date",limit:parseInt(limit)})
     const {data:hourlydata}= useGetEnergyRecordsBysolarIdQuery({id:"68ed36a4a3ecf49f08f986ea",groupBy:"hour"})
-    const [filterData,setfilterData]=useState(dailydata.slice(0,7));
+    const [filterData,setfilterData]=useState([]);
+    
+    useEffect(()=>{
+        if(dailydata){
+            setfilterData(dailydata.slice(0,limit))
+        }
+    },[dailydata,limit]);
 
     if(isLoading){
         return(
@@ -22,12 +30,13 @@ const EnergyChart =()=>{
             <div>Error:{error.message}</div>
         )
     }
+    
     const handleSelection=(e)=>{
         const value= e.target.value;
         if(value==='month'){
-            setfilterData( dailydata.slice(0,30));
+            setlimit(30);
         }else if(value==='week'){
-            setfilterData(dailydata.slice(0,7));
+            setlimit(7);
         }else{
             const selectedDate = hourlydata?.[0]?._id?.date;
             const sameDayData = hourlydata?.filter(
