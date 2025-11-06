@@ -1,18 +1,36 @@
 import { useGetWeatherByCityQuery } from "@/lib/redux/query";
 import { Loader2, Thermometer, Wind, Zap } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const WeatherData=()=>{
-    const coords = { lat: 6.941553, lon: 80.010628 }
-    const{data,isLoading,isError,error}=useGetWeatherByCityQuery(coords);
-    if(isLoading){
+    const [coords,SetCoords] = useState(null)
+    
+    useEffect(()=>{
+       if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(
+            (position)=>{
+                SetCoords({
+                    lat:position.coords.latitude,
+                    lon:position.coords.longitude
+                })
+            }
+        )
+       }else{
+        console.log("Error in accessing location")
+        return;
+       }
+    },[])
+    const{data,isLoading,isError,error}=useGetWeatherByCityQuery(coords,{skip:!coords});
+    if(isLoading || !coords){
         return(
-        <div className="w-full h-[300px] py-40 bg-white">
+        <div className="w-[1150px] h-[300px] py-40 mb-4 rounded-xl bg-white">
             <div className="flex flex-col px-150 justify-center items-center">
                 <Loader2 className="w-6 h-6 animate-spin"/>
                 <span className="font-semibold text-xl animation-pulse text-gray-700">Loading...</span>
             </div>
         </div>)
     }
+
     if(!data || isError){
         return(
             <div>Error:{error.message}</div>
