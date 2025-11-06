@@ -5,12 +5,16 @@ import Layout from "./layout/layout";
 import RootLayout from "./layout/rootLayout";
 import DashboardLayout from "./layout/dashboardlayout";
 import Anomaly from "./pages/anomaly/anomaly";
+import Signin from "./pages/Auth/signIn";
+import Signup from "./pages/Auth/signUp";
 
 function App() {
   return (
     <>  
       <Routes paths="/*">
         <Route element={<RootLayout/>}>
+          <Route path="/sign-in" element={<Signin/>} />
+          <Route path="/sign-up" element={<Signup/>} />
           <Route element={ <Layout/> } > 
             <Route path="/" element={ <Homepage/> } /> 
           </Route>
