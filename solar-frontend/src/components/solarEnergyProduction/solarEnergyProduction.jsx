@@ -5,7 +5,7 @@ import { useGetEnergyRecordsBysolarIdQuery } from "@/lib/redux/query";
 import { format, subDays} from "date-fns";
 import { Loader2 } from "lucide-react";
 
-const SolarEnergyProduction= ()=>{
+const SolarEnergyProduction= ({SolarUnitId})=>{
     //click on buttons in the cards
     const Tabs=[{label:"All",value:"all"},
         {label:"Anomaly",value:"anomaly"}
@@ -18,7 +18,8 @@ const SolarEnergyProduction= ()=>{
     })
     
     //automatically handle fetching data
-    const {data,isError,error,isLoading}=useGetEnergyRecordsBysolarIdQuery({id:"68ed36a4a3ecf49f08f986ea",groupBy:"date"});
+    const {data,isError,error,isLoading}=useGetEnergyRecordsBysolarIdQuery({id:SolarUnitId,groupBy:"date",limit:7});
+    console.log(data)
     
     if(isLoading){
         return(

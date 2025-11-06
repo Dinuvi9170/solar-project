@@ -1,9 +1,16 @@
+import { getEnergyRecordsBySolaridDto} from "../domain/dtos/solar-unit";
+import { ValidationError } from "../domain/errors/errors";
 import {EnergyGenerationRecord} from "../infrastructure/entity/energyGenerationRecords";
 import {Request,Response,NextFunction} from 'express';
 
 export const getEnergyRecordsBySolarid= async (req:Request,res:Response,next:NextFunction)=>{
     try{
-        const {groupBy}=req.query;
+        const result= getEnergyRecordsBySolaridDto.safeParse(req.query);
+        if(!result.success){
+            throw new ValidationError(result.error.message)
+        }
+        const {groupBy,limit}=result.data;
+
         if(!groupBy){
             const energyrecord = await EnergyGenerationRecord.find({
                 SolarUnitId:req.params.id
@@ -26,7 +33,11 @@ export const getEnergyRecordsBySolarid= async (req:Request,res:Response,next:Nex
                     $sort:{"_id.date":-1}
                 }
             ])
-            res.status(200).json(energyrecord);
+            if(!limit){
+                res.status(200).json(energyrecord);
+                return;
+            }
+            res.status(200).json(energyrecord.slice(0,parseInt(limit)));
         }
         if(groupBy==="hour"){
             const energyrecord = await EnergyGenerationRecord.aggregate([

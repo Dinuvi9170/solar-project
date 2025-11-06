@@ -1,13 +1,12 @@
-import { Loader2, Thermometer, Wind, Zap } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import EnergyConsumptionCard from "./components/energyConsumptionCard";
 import { useGetEnergyRecordsBysolarIdQuery } from "@/lib/redux/query";
 import { format, subDays } from "date-fns";
-import EnergyChart from "./components/energyChart";
 import WeatherData from "./components/weatherdata";
 
-const DashboardPage =()=>{
-    const {data,isLoading,isError,error}=useGetEnergyRecordsBysolarIdQuery({id:"68ed36a4a3ecf49f08f986ea", groupBy:"date"});
-
+const DashboardPage =({SolarUnitId})=>{
+    const {data,isLoading,isError,error}=useGetEnergyRecordsBysolarIdQuery({id:SolarUnitId, groupBy:"date"});
+    
     if(isLoading){
         return(
         <div className="w-full h-[300px] py-40 bg-white">
@@ -27,7 +26,7 @@ const DashboardPage =()=>{
         date: new Date(el._id.date)    
     }))
     const lastrecord= Days[0];
-    const sevendayago= subDays(new Date(lastrecord.date),6);
+    const sevendayago= subDays(new Date(lastrecord?.date),6);
     
     const weekData= Days.filter((day)=>{
         return day.date>=sevendayago
@@ -57,7 +56,7 @@ const DashboardPage =()=>{
                         ))}
                     </div>
                 </div>
-                <EnergyChart/>
+                {/* <EnergyChart/> */}
             </div>
         </div>
     )

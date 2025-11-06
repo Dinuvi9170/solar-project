@@ -7,7 +7,7 @@ export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl:BaseUrl }),
   endpoints: (build) => ({
     getEnergyRecordsBysolarId: build.query({
-      query: ({id,groupBy}) => `/energyRecords/solar-unit/${id}?groupBy=${groupBy}`,
+      query: ({id,groupBy,limit}) => `/energyRecords/solar-unit/${id}?groupBy=${groupBy}${limit?`&limit=${limit}`:""}`,
     }),
 
     getWeatherByCity:build.query({

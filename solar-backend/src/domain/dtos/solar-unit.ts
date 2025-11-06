@@ -14,3 +14,8 @@ export const UpdateSolarUnitDto = z.object({
     capasity: z.number(),
     status: z.enum(["ACTIVE","INACTIVE","MAINTAINANCE"])
 }).partial();
+
+export const getEnergyRecordsBySolaridDto = z.object({
+    groupBy:z.enum(["date","hour"]).optional(),
+    limit:z.string().min(1).optional()
+})
