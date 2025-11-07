@@ -1,8 +1,9 @@
 //import s from "./navbar.module.css";
 import { Link } from "react-router-dom";
+import { Button } from "../ui/button";
+import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
+import { useState } from "react";
 const Navigation =()=>{
-    const user="JD";
-
     return (
         <nav className={"px-12 py-6 flex items-center justify-between "}>
             <Link to="/" className={"flex items-center gap-3"}>
@@ -26,31 +27,43 @@ const Navigation =()=>{
                 </div>
                 <span className={"text-lg font-semibold font-[Inter]"}>Aelora</span>
             </Link>
-            <div className={"flex  gap-12"}>
-                <Link to="/dashboard" className={"flex items-center px-3 py-2"}>
-                    <svg 
-                        xmlns="http://www.w3.org/2000/svg" 
-                        width="24" 
-                        height="24" 
-                        viewBox="0 0 24 24" 
-                        fill="none" 
-                        stroke="currentColor" 
-                        strokeWidth="2" 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round" 
-                        className={"p-1 m-1 object-center"}
-                    >
-                        <path d="M3 3v16a2 2 0 0 0 2 2h16"/>
-                        <path d="M18 17V9"/><path d="M13 17V5"/>
-                        <path d="M8 17v-3"/>
-                    </svg>
-                    <span className={"text-sm weight-medium font-[Inter]"}>Dashboard</span>
-                </Link>
+            <div className={"flex  gap-5"}>
+                <SignedIn asChild>
+                    <Link to="/dashboard" className={"flex items-center px-3 py-2"}>
+                        <svg 
+                            xmlns="http://www.w3.org/2000/svg" 
+                            width="24" 
+                            height="24" 
+                            viewBox="0 0 24 24" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            strokeWidth="2" 
+                            strokeLinecap="round" 
+                            strokeLinejoin="round" 
+                            className={"p-1 m-1 object-center"}
+                        >
+                            <path d="M3 3v16a2 2 0 0 0 2 2h16"/>
+                            <path d="M18 17V9"/><path d="M13 17V5"/>
+                            <path d="M8 17v-3"/>
+                        </svg>    
+                        <span className={"text-sm weight-medium font-[Inter]"}>Dashboard</span>
+                    </Link>
+                </SignedIn>
                 <div className={"flex items-center px-3 py-2 gap-[10px]" }>
-                    <div className={"bg-[#65a0da] rounded-full h-8 w-8"}>
-                        <span className={"flex justify-center items-center mt-1 text-white"}>{user}</span>
-                    </div>
-                    <span className={"text-sm weight-medium font-[Inter]"}>John</span>
+                    <SignedOut>
+                        <Button>
+                            <Link to='/sign-in'>Sign In</Link>
+                        </Button>
+                    </SignedOut> 
+                    <SignedIn>
+                        <UserButton
+                            appearance={{
+                            elements: {
+                                avatarBox: "w-10 h-10 border-2 border-blue-500 rounded-full",
+                            },
+                            }}
+                        />    
+                    </SignedIn>
                 </div>
             </div>
         </nav>

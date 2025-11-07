@@ -4,8 +4,10 @@ import Tab from "../../pages/home/components/tab";
 import { useGetEnergyRecordsBysolarIdQuery } from "@/lib/redux/query";
 import { format, subDays} from "date-fns";
 import { Loader2 } from "lucide-react";
+import { useUser } from "@clerk/clerk-react";
 
 const SolarEnergyProduction= ({SolarUnitId})=>{
+    const {isSignedIn}= useUser();
     //click on buttons in the cards
     const Tabs=[{label:"All",value:"all"},
         {label:"Anomaly",value:"anomaly"}
@@ -64,6 +66,7 @@ const SolarEnergyProduction= ({SolarUnitId})=>{
     })
 
     return(
+        isSignedIn?(
         <section className={"px-18 py-6 font-[Inter]"}>
            <div className={"mb-2"}>
                 <h2 className="text-2xl font-bold mb-2">Solar Energy Production</h2>
@@ -118,6 +121,7 @@ const SolarEnergyProduction= ({SolarUnitId})=>{
                 </div>
            </div>
         </section>
+        ):("")
     );
 };
 export default SolarEnergyProduction;

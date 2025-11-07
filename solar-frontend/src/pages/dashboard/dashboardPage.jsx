@@ -4,9 +4,12 @@ import { useGetEnergyRecordsBysolarIdQuery } from "@/lib/redux/query";
 import { format, subDays } from "date-fns";
 import WeatherData from "./components/weatherdata";
 import EnergyChart from "./components/energyChart";
+import { useUser } from "@clerk/clerk-react";
 
 const DashboardPage =({SolarUnitId})=>{
     const {data,isLoading,isError,error}=useGetEnergyRecordsBysolarIdQuery({id:SolarUnitId, groupBy:"date"});
+    const {user}=useUser();
+    console.log(user)
     
     if(isLoading){
         return(
@@ -37,7 +40,7 @@ const DashboardPage =({SolarUnitId})=>{
             <div className="px-8 py-2 flex flex-col">
                 <div className="flex w-full justify-between">
                     <div className="flex flex-col">
-                        <h1 className="text-2xl font-bold">Alexander's Home</h1>
+                        <h1 className="text-2xl font-bold">{user?.firstName}'s Home</h1>
                         <span className="text-base text-gray-500">Welcome back to your Solar Energy dashboard</span>
                     </div>
                     <div className="flex">
