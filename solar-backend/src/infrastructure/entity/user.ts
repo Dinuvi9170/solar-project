@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
 
 const UserSchema= new mongoose.Schema({
-    name: {
+    firstName: {
       type: String,
-      required: true,
-      trim: true,
+    },
+    lastName: {
+      type: String,
     },
     email: {
       type: String,
@@ -13,6 +14,11 @@ const UserSchema= new mongoose.Schema({
       lowercase: true,
       trim: true,
     },
+    clerkId:{
+      type: String,
+      required: true,
+      unique: true,
+    },
     createdAt: {
       type: Date,
       default: Date.now,
@@ -20,4 +26,4 @@ const UserSchema= new mongoose.Schema({
 
 })
 
-export const User= mongoose.model("user",UserSchema);
+export const User= mongoose.model("users",UserSchema);

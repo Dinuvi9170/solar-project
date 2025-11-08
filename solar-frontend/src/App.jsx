@@ -8,6 +8,8 @@ import Anomaly from "./pages/anomaly/anomaly";
 import Signin from "./pages/Auth/signIn";
 import Signup from "./pages/Auth/signUp";
 import Protectedlayout from "./layout/protectedlayout";
+import Authorizedlayout from "./layout/authorizedlayout";
+import Admin from "./pages/admin/adminpage";
 
 function App() {
   return (
@@ -23,6 +25,9 @@ function App() {
             <Route element={ <DashboardLayout/> } >  
               <Route path="/dashboard" element={ <DashboardPage/> } />
               <Route path="/dashboard/anomaly" element={ <Anomaly/> } />
+            </Route>
+            <Route element={<Authorizedlayout/>}>
+              <Route path="/admin/dashboard" element={ <Admin/> } />  
             </Route> 
           </Route>
         </Route>

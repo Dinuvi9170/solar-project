@@ -8,10 +8,7 @@ const Protectedlayout=()=>{
     if(!isSignedIn) {
         return <Navigate to="/sign-in"/>
     }
-    return (
-        <>
-            <Outlet/>
-        </>
-    )
+   
+    return <Outlet/>   
 }
 export default Protectedlayout;
