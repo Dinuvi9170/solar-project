@@ -5,6 +5,7 @@ import { NotFoundError, ValidationError } from "../domain/errors/errors";
 import { SolarUnit } from "../infrastructure/entity/solar-units";
 import {NextFunction, Request,Response} from "express";
 import { User } from "../infrastructure/entity/user";
+import { getAuth } from "@clerk/express";
 
 export const getAllUnits= async (req:Request,res:Response,next:NextFunction)=>{
     try{
@@ -53,9 +54,10 @@ export const getUnitId= async (req:Request,res:Response,next:NextFunction)=>{
     }
 }
 
-export const getSolarUnitByClerkId = async (req: Request, res: Response, next: NextFunction) => {
+export const getSolarUnitforUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { clerkId } = req.params;
+        const auth=getAuth(req);
+        const clerkId=auth.userId;
 
         if (!clerkId) {
             return res.status(400).json({ message: "clerkId parameter is required" });

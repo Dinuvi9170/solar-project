@@ -4,7 +4,18 @@ const BaseUrl='http://localhost:8000/api';
 const WEATHERAPI= import.meta.env.VITE_WEATHER_API_KEY;
 export const api = createApi({
   reducerPath: 'api',
-  baseQuery: fetchBaseQuery({ baseUrl:BaseUrl }),
+  baseQuery: fetchBaseQuery({ baseUrl:BaseUrl, prepareHeaders:async(headers)=>{
+    const clerk= window.Clerk;
+    if(clerk){
+      const token=await clerk.session.getToken();
+      console.log(token)
+      if(token){
+        headers.set('Authorization', `Bearer ${token}`);
+      }
+    }
+    
+    return headers;
+  } }),
   endpoints: (build) => ({
     getEnergyRecordsBysolarId: build.query({
       query: ({id,groupBy,limit}) => `/energyRecords/solar-unit/${id}?groupBy=${groupBy}${limit?`&limit=${limit}`:""}`,
@@ -13,13 +24,13 @@ export const api = createApi({
     getWeatherByCity:build.query({
       query:({lat,lon})=>`https://api.weatherapi.com/v1/current.json?key=${WEATHERAPI}&q=${lat},${lon}&api=no`
     }),
-    getSolarUnitByClerkId:build.query({
-      query:({clerkId})=> `/solar-units/users/${clerkId}`
+    getSolarUnitforUser:build.query({
+      query:()=> `/solar-units/me`
     }),
   }),
 })
 
 export const { useGetEnergyRecordsBysolarIdQuery,
   useGetWeatherByCityQuery,
-  useGetSolarUnitByClerkIdQuery
+  useGetSolarUnitforUserQuery
  } = api;

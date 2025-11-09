@@ -1,13 +1,15 @@
 import {useState } from "react";
 import EnergyProductionCard from "../../pages/home/components/energyProductCard";
 import Tab from "../../pages/home/components/tab";
-import { useGetEnergyRecordsBysolarIdQuery } from "@/lib/redux/query";
+import { useGetEnergyRecordsBysolarIdQuery,useGetSolarUnitforUserQuery } from "@/lib/redux/query";
 import { format, subDays} from "date-fns";
 import { Loader2 } from "lucide-react";
 import { useUser } from "@clerk/clerk-react";
 
-const SolarEnergyProduction= ({SolarUnitId})=>{
-    const {isSignedIn}= useUser();
+const SolarEnergyProduction= ()=>{
+    const {user,isLoaded,isSignedIn}=useUser();
+    const {data:solarunit}=useGetSolarUnitforUserQuery(undefined,{skip:!user || !isLoaded});
+
     //click on buttons in the cards
     const Tabs=[{label:"All",value:"all"},
         {label:"Anomaly",value:"anomaly"}
@@ -20,8 +22,10 @@ const SolarEnergyProduction= ({SolarUnitId})=>{
     })
     
     //automatically handle fetching data
-    const {data,isError,error,isLoading}=useGetEnergyRecordsBysolarIdQuery({id:SolarUnitId,groupBy:"date",limit:7});
-    console.log(data)
+    const {data,isError,error,isLoading}=useGetEnergyRecordsBysolarIdQuery(
+        {id:solarunit?._id,groupBy:"date",limit:7});
+    
+    if(!solarunit?._id) return null;
     
     if(isLoading){
         return(

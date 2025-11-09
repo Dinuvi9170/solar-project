@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ChartAreaAxes } from "@/components/ui/areaChart/areaChart";
-import { useGetEnergyRecordsBysolarIdQuery, useGetSolarUnitByClerkIdQuery } from "@/lib/redux/query";
+import { useGetEnergyRecordsBysolarIdQuery, useGetSolarUnitforUserQuery } from "@/lib/redux/query";
 import { Funnel, Loader2 } from "lucide-react";
 import { useUser } from "@clerk/clerk-react";
 
@@ -8,8 +8,7 @@ const EnergyChart =()=>{
     const { user } = useUser();
     const [limit,setlimit]=useState(7)
 
-    const {data:solarunit}=useGetSolarUnitByClerkIdQuery({clerkId:user?.id});
-    console.log(solarunit)
+    const {data:solarunit}=useGetSolarUnitforUserQuery({skip:!user});
     
     const {data:dailydata,isLoading, isError,error}= useGetEnergyRecordsBysolarIdQuery({
         id:solarunit?._id, groupBy:"date", limit:parseInt(limit)})

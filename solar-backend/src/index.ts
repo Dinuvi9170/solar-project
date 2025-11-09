@@ -7,6 +7,8 @@ import { LoggerMiddleware } from './api/middleware/logger';
 import { ErrorHandlingMiddleware } from './api/middleware/errorHandling';
 import cors from "cors";
 import webhooksRouter from './api/webhooks';
+import { Authenticate } from './api/middleware/authentication';
+import { clerkMiddleware } from '@clerk/express';
 
 const server= express();
 
@@ -15,6 +17,7 @@ server.use(cors({origin:"http://localhost:5173"}));
 server.use(LoggerMiddleware);
 
 server.use("/api/webhooks",webhooksRouter);
+server.use(clerkMiddleware());
 
 server.use(express.json());// convert structured data into json
 

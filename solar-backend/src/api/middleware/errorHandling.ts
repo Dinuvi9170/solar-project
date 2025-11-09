@@ -1,5 +1,4 @@
 import {NextFunction, Request,Response} from "express";
-import {NotFoundError,ValidationError} from "../../domain/errors/errors";
 
 export const ErrorHandlingMiddleware=(
     err:Error,
@@ -13,6 +12,9 @@ export const ErrorHandlingMiddleware=(
     }
     if(err.name==="ValidationError"){
         return res.status(400).json({message:err.message});
+    }
+    if(err.name==="UnAuthorizedError"){
+        return res.status(401).json({message:err.message});
     }
     
     return res.status(500).json({message:"Internal server error"});

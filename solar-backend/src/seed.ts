@@ -27,14 +27,14 @@ const seedData = async () => {
     // Create sample SolarUnit first
     const solarUnits = await SolarUnit.create({
       serialNumber: "SUN-001",
-      installationDate: new Date("2025-9-10"),
+      installationDate: new Date("2025-9-01"),
       capasity: 5000,
       status: "ACTIVE",
     });
 
     const energyrecords=[];
-    const startDate=new Date("2025-08-01T06:00:00.000Z")
-    const endDate=new Date("2025-10-12T06:00:00.000Z")
+    const startDate=new Date("2025-10-01T06:00:00.000Z")
+    const endDate=new Date("2025-11-09T06:00:00.000Z")
 
     let currentDate= new Date(startDate);
     let recordcount=0;
