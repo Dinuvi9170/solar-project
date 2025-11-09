@@ -40,7 +40,7 @@ export function ChartAreaAxes({data}) {
   return (
     <Card className={'shadow-none border-none'}>
       <CardContent >
-        <ChartContainer config={chartConfig} className={'h-60 w-full'}>
+        <ChartContainer config={chartConfig} className={'h-70 w-full'}>
           <AreaChart
             accessibilityLayer
             data={data}
@@ -69,8 +69,8 @@ export function ChartAreaAxes({data}) {
             <YAxis
               tickLine={false}
               axisLine={false}
-              tickMargin={8}
-              tickCount={5}
+              tickMargin={10}
+              tickCount={6}
               tickFormatter={(value) => value +"kWh"}
             />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />

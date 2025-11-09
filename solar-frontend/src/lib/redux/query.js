@@ -12,8 +12,14 @@ export const api = createApi({
 
     getWeatherByCity:build.query({
       query:({lat,lon})=>`https://api.weatherapi.com/v1/current.json?key=${WEATHERAPI}&q=${lat},${lon}&api=no`
-    })
+    }),
+    getSolarUnitByClerkId:build.query({
+      query:({clerkId})=> `/solar-units/users/${clerkId}`
+    }),
   }),
 })
 
-export const { useGetEnergyRecordsBysolarIdQuery, useGetWeatherByCityQuery } = api;
+export const { useGetEnergyRecordsBysolarIdQuery,
+  useGetWeatherByCityQuery,
+  useGetSolarUnitByClerkIdQuery
+ } = api;

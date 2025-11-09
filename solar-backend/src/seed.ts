@@ -15,7 +15,7 @@ const seedData = async () => {
     // Clear both collections
     await mongoose.connection.collection("solarunits").deleteMany({});
     await mongoose.connection.collection("energyrecords").deleteMany({});
-    await mongoose.connection.collection("users").deleteMany({});
+    //await mongoose.connection.collection("users").deleteMany({});
     console.log(" Existing data cleared");
 
     //create user
@@ -23,18 +23,13 @@ const seedData = async () => {
         
     //     {name:"Bob Smith", email:"bob@gmail.com",createdAt:new Date("2025-10-11T06:00:00.000Z")}
     // ];
-    const users= await User.create({
-      name:"Alice Johnson", 
-      email:"alice@gmail.com",
-    });
-
+   
     // Create sample SolarUnit first
     const solarUnits = await SolarUnit.create({
       serialNumber: "SUN-001",
       installationDate: new Date("2025-9-10"),
       capasity: 5000,
       status: "ACTIVE",
-      userId: users._id
     });
 
     const energyrecords=[];
@@ -71,7 +66,7 @@ const seedData = async () => {
           timemultipler=1.5;
         }
       }else{
-        timemultipler=0;
+        timemultipler=0.1;
       }
 
       const variation= 0.8+Math.random()*0.4;

@@ -4,6 +4,7 @@ import { CreateSolarUnitDto, UpdateSolarUnitDto } from "../domain/dtos/solar-uni
 import { NotFoundError, ValidationError } from "../domain/errors/errors";
 import { SolarUnit } from "../infrastructure/entity/solar-units";
 import {NextFunction, Request,Response} from "express";
+import { User } from "../infrastructure/entity/user";
 
 export const getAllUnits= async (req:Request,res:Response,next:NextFunction)=>{
     try{
@@ -51,6 +52,32 @@ export const getUnitId= async (req:Request,res:Response,next:NextFunction)=>{
         next(error); 
     }
 }
+
+export const getSolarUnitByClerkId = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { clerkId } = req.params;
+
+        if (!clerkId) {
+            return res.status(400).json({ message: "clerkId parameter is required" });
+        }
+
+        const user = await User.findOne({ clerkId });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const solarUnits = await SolarUnit.find({ userId: user._id });
+
+        if (solarUnits.length > 0) {
+            console.log(`Found ${solarUnits.length} solar unit(s) for userId: ${user._id}`);
+            return res.status(200).json(solarUnits[0]);
+        } else {
+            return console.log("No solar units found" );
+        }
+    } catch (error) {
+        next(error); 
+    }
+};
 
 export const updateSolarunit= async (req:Request,res:Response,next:NextFunction)=>{
     try{
