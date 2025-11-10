@@ -9,7 +9,9 @@ import Signin from "./pages/Auth/signIn";
 import Signup from "./pages/Auth/signUp";
 import Protectedlayout from "./layout/protectedlayout";
 import Authorizedlayout from "./layout/authorizedlayout";
-import Admin from "./pages/admin/adminpage";
+import AdminSolarUnits from "./pages/admin/adminpage";
+import AdminLayout from "./layout/adminDashboard";
+import AdminSettings from "./pages/admin/settings";
 
 function App() {
   return (
@@ -27,7 +29,10 @@ function App() {
               <Route path="/dashboard/anomaly" element={ <Anomaly/> } />
             </Route>
             <Route element={<Authorizedlayout/>}>
-              <Route path="/admin/dashboard" element={ <Admin/> } />  
+              <Route path='/admin' element={ <AdminLayout/> } >  
+                <Route path="/admin/solarunits" element={ <AdminSolarUnits/> } /> 
+                <Route path="/admin/settings" element={ <AdminSettings/> } /> 
+              </Route> 
             </Route> 
           </Route>
         </Route>

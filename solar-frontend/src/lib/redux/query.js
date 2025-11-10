@@ -27,10 +27,14 @@ export const api = createApi({
     getSolarUnitforUser:build.query({
       query:()=> `/solar-units/me`
     }),
+    getSolarUnits:build.query({
+      query:()=>'/solar-units'
+    })
   }),
 })
 
 export const { useGetEnergyRecordsBysolarIdQuery,
   useGetWeatherByCityQuery,
-  useGetSolarUnitforUserQuery
+  useGetSolarUnitforUserQuery,
+  useGetSolarUnitsQuery
  } = api;

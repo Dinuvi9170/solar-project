@@ -9,13 +9,12 @@ import { getAuth } from "@clerk/express";
 
 export const getAllUnits= async (req:Request,res:Response,next:NextFunction)=>{
     try{
-        const dataUnits = await SolarUnit.find();
+        const dataUnits = await SolarUnit.find().populate("userId", "firstName lastName email");
         res.status(200).json({message:"fetched",dataUnits});
     }catch(error){
         console.error(error)
         next(error);
-    }
-   
+    }   
 };
 
 export const createSolarUnit= async(req:Request,res:Response,next:NextFunction)=>{

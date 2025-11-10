@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const SolarUnitSchema = new mongoose.Schema({
     userId:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: "users",
     },
     serialNumber:{
         type: String,
