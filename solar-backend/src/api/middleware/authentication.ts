@@ -4,6 +4,7 @@ import { UnAuthorizedError } from "../../domain/errors/errors";
 
 export const Authenticate = (req: Request, res: Response, next: NextFunction) => {
  const auth= getAuth(req);
+ console.log(auth)
  if(!auth.userId){
    throw new UnAuthorizedError("UnAuthorized");
  }

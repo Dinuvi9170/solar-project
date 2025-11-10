@@ -9,7 +9,7 @@ import { useUser } from "@clerk/clerk-react";
 const DashboardPage =()=>{
     const {user}=useUser();
     
-    const {data:solarunit}=useGetSolarUnitforUserQuery({skip:!user});
+    const {data:solarunit}=useGetSolarUnitforUserQuery(undefined,{skip:!user});
 
     const {data,isLoading,isError,error}=useGetEnergyRecordsBysolarIdQuery({id:solarunit?._id, groupBy:"date"});
     

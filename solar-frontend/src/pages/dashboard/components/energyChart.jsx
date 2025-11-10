@@ -8,7 +8,7 @@ const EnergyChart =()=>{
     const { user } = useUser();
     const [limit,setlimit]=useState(7)
 
-    const {data:solarunit}=useGetSolarUnitforUserQuery({skip:!user});
+    const {data:solarunit}=useGetSolarUnitforUserQuery(undefined,{skip:!user});
     
     const {data:dailydata,isLoading, isError,error}= useGetEnergyRecordsBysolarIdQuery({
         id:solarunit?._id, groupBy:"date", limit:parseInt(limit)})
