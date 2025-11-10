@@ -18,6 +18,7 @@ webhooksRouter.post('/clerk', express.raw({ type: 'application/json' }), async (
     console.log('Webhook payload:', evt.data)
     
     if(eventType==='user.created'){
+      const { id } = evt.data
       const user = await User.findOne({clerkId:id});
 
       if(user){
@@ -29,8 +30,20 @@ webhooksRouter.post('/clerk', express.raw({ type: 'application/json' }), async (
         lastName:evt.data.last_name,
         email:evt.data.email_addresses[0].email_address,
         clerkId:id,
-      })
-      
+      })  
+    }
+
+    if(eventType==='user.updated'){
+      const { id } = evt.data
+      const user = await User.findOneAndUpdate(
+        {clerkId:id},{
+          role: evt.data.public_metadata.role
+        }
+      );
+    }
+    if(eventType==='user.deleted'){
+      const { id } = evt.data
+      await User.findOneAndDelete({clerkId:id});
     }
     return res.send('Webhook received')
   } catch (err) {
