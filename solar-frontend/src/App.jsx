@@ -12,6 +12,7 @@ import Authorizedlayout from "./layout/authorizedlayout";
 import AdminSolarUnits from "./pages/admin/adminpage";
 import AdminLayout from "./layout/adminDashboard";
 import AdminSettings from "./pages/admin/settings";
+import SolarUnitDetail from "./pages/admin/viewSolarUnit";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
               <Route path='/admin' element={ <AdminLayout/> } >  
                 <Route path="/admin/solarunits" element={ <AdminSolarUnits/> } /> 
                 <Route path="/admin/settings" element={ <AdminSettings/> } /> 
+                <Route path="/admin/solarunits/:id" element={ <SolarUnitDetail/> } /> 
               </Route> 
             </Route> 
           </Route>

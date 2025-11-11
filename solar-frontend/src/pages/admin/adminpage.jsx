@@ -2,17 +2,19 @@ import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Edit, Trash2, Plus, Loader2 } from "lucide-react";
+import { Edit, Plus, Loader2, Zap, SquareChartGantt } from "lucide-react";
 import { useGetSolarUnitsQuery } from "@/lib/redux/query";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const AdminSolarUnits = () => {
+  const navigate= useNavigate();
   const {data:units,isLoading,isError,error}= useGetSolarUnitsQuery();
   console.log(units)
   const [search, setSearch] = useState("");
   
   if(isLoading){
       return(
-          <div className="w-full h-[300px] py-40 bg-white">
+          <div className="w-full h-[300px] py-40 bg-gray-100">
             <div className="flex flex-col px-150 justify-center items-center">
                 <Loader2 className="w-6 h-6 animate-spin"/>
                 <span className="font-semibold text-xl animation-pulse text-gray-700">Loading...</span>
@@ -47,34 +49,23 @@ const AdminSolarUnits = () => {
             onChange={(e) => setSearch(e.target.value)}
             className="w-64"
           />
-          <Button className="flex items-center gap-1">
-            <Plus className="w-4 h-4" /> Add Unit
+          <Button className="flex items-center gap-1  bg-blue-500 hover:bg-blue-500/70">
+            <Plus className="w-4 h-4 " /> Add Unit
           </Button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredUnits.map((unit) => (
           <Card key={unit._id} className="shadow-lg hover:shadow-xl transition-shadow">
             <CardHeader>
-              <CardTitle className="text-lg font-semibold">{unit.serialNumber}</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <p>
-                <span className="font-medium text-gray-700">User:</span>{" "}
-                {unit.userId?.firstName} {unit.userId?.lastName}
-              </p>
-              <p>
-                <span className="font-medium text-gray-700">Installation Date:</span>{" "}
-                {new Date(unit.installationDate).toLocaleDateString()}
-              </p>
-              <p>
-                <span className="font-medium text-gray-700">Capacity:</span>{" "}
-                {unit.capasity} kW
-              </p>
-              <p>
-                <span className="font-medium text-gray-700">Status:</span>{" "}
-                <span
+              <CardTitle className="text-md font-semibold flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <Zap color='gray' className="w-4 h-4"/>
+                  {unit.serialNumber}
+                </div>
+                <div className="flex">
+                  <span
                   className={`font-semibold ${
                     unit.status === "ACTIVE"
                       ? "text-green-600"
@@ -85,14 +76,20 @@ const AdminSolarUnits = () => {
                 >
                   {unit.status}
                 </span>
+                </div>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <p className="px-6 text-gray-500 ">
+                {unit.capasity} kW
               </p>
-
               <div className="flex gap-2 mt-2">
                 <Button size="sm" variant="outline" className="flex-1">
                   <Edit className="w-4 h-4 mr-1" /> Edit
                 </Button>
-                <Button size="sm" variant="destructive" className="flex-1">
-                  <Trash2 className="w-4 h-4 mr-1" /> Delete
+                <Button size="sm" onClick={()=>navigate(`/admin/solarunits/${unit._id}`)} 
+                  className="flex-1 bg-blue-500 hover:bg-blue-500/70">
+                  <SquareChartGantt className="w-4 h-4 mr-1" /> View
                 </Button>
               </div>
             </CardContent>
