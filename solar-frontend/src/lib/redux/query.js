@@ -29,6 +29,16 @@ export const api = createApi({
     }),
     getSolarUnits:build.query({
       query:()=>'/solar-units'
+    }),
+    getSolatUnitById:build.query({
+      query:({id})=>`/solar-units/${id}`
+    }),
+    updateSolarUnit:build.mutation({
+      query:({id,...data})=>({
+        url:`/solar-units/${id}`,
+        method:'PUT',
+        body:data
+      })
     })
   }),
 })
@@ -36,5 +46,7 @@ export const api = createApi({
 export const { useGetEnergyRecordsBysolarIdQuery,
   useGetWeatherByCityQuery,
   useGetSolarUnitforUserQuery,
-  useGetSolarUnitsQuery
+  useGetSolarUnitsQuery,
+  useGetSolatUnitByIdQuery,
+  useUpdateSolarUnitMutation
  } = api;

@@ -13,6 +13,7 @@ import AdminSolarUnits from "./pages/admin/adminpage";
 import AdminLayout from "./layout/adminDashboard";
 import AdminSettings from "./pages/admin/settings";
 import SolarUnitDetail from "./pages/admin/viewSolarUnit";
+import EditSolarUnit from "./pages/admin/edit Solarunit";
 
 function App() {
   return (
@@ -33,7 +34,8 @@ function App() {
               <Route path='/admin' element={ <AdminLayout/> } >  
                 <Route path="/admin/solarunits" element={ <AdminSolarUnits/> } /> 
                 <Route path="/admin/settings" element={ <AdminSettings/> } /> 
-                <Route path="/admin/solarunits/:id" element={ <SolarUnitDetail/> } /> 
+                <Route path="/admin/solarunits/:id" element={ <SolarUnitDetail/> } />
+                <Route path="/admin/solarunits/editsolarunit/:id" element={ <EditSolarUnit/> } />
               </Route> 
             </Route> 
           </Route>

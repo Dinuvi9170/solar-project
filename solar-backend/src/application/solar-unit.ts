@@ -9,7 +9,7 @@ import { getAuth } from "@clerk/express";
 
 export const getAllUnits= async (req:Request,res:Response,next:NextFunction)=>{
     try{
-        const dataUnits = await SolarUnit.find().populate("userId", "firstName lastName email");
+        const dataUnits = await SolarUnit.find().populate("userId", "firstName lastName email _id");
         res.status(200).json({message:"fetched",dataUnits});
     }catch(error){
         console.error(error)
@@ -42,7 +42,7 @@ export const createSolarUnit= async(req:Request,res:Response,next:NextFunction)=
 export const getUnitId= async (req:Request,res:Response,next:NextFunction)=>{
     try{
         const {id}=req.params;
-        const solarUnit= await SolarUnit.findById(id);
+        const solarUnit= await SolarUnit.findById(id).populate("userId", "firstName lastName email _id");
 
         if(solarUnit)
             res.status(200).json(solarUnit);
