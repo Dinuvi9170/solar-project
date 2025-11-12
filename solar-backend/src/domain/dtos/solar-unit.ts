@@ -5,7 +5,7 @@ export const CreateSolarUnitDto = z.object({
     installationDate: z.string(),
     capasity: z.number(),
     status: z.enum(["ACTIVE","INACTIVE","MAINTAINANCE"]),
-    userId: z.string().min(1)
+    userId: z.string().optional().or(z.literal(""))
 });
 
 export const UpdateSolarUnitDto = z.object({

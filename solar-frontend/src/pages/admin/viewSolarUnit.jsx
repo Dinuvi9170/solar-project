@@ -105,6 +105,7 @@ const SolarUnitDetail = () => {
                                 </span>
                             </div>
                             </div>
+                            <div className="border-b w-full"/>
                         </CardContent>
                         </Card>
 
@@ -117,23 +118,26 @@ const SolarUnitDetail = () => {
                         <CardContent className="p-6 space-y-4">
                             <div className="flex items-center gap-3">
                             <Hash className="w-5 h-5 text-gray-500" />
-                            <div>
+                            <div className="w-full">
                                 <p className="text-gray-600 font-medium">Serial Number</p>
                                 <p className="text-gray-900 font-bold">{unit.serialNumber}</p>
+                                <div className="border-b w-full"/>
                             </div>
                             </div>
                             <div className="flex items-center gap-3">
                             <CalendarDays className="w-5 h-5 text-gray-500" />
-                            <div>
+                            <div className="w-full">
                                 <p className="text-gray-600 font-medium">Installation Date</p>
                                 <p className="text-gray-900 font-bold">{formattedDate}</p>
+                                <div className="border-b w-full"/>
                             </div>
                             </div>
                             <div className="flex items-center gap-3">
                             <Zap className="w-5 h-5 text-gray-500" />
-                            <div>
+                            <div className="w-full">
                                 <p className="text-gray-600 font-medium">Capacity</p>
                                 <p className="text-gray-900 font-bold">{unit.capasity} kW</p>
+                                <div className="border-b w-full"/>
                             </div>
                             </div>
                         </CardContent>
@@ -148,27 +152,30 @@ const SolarUnitDetail = () => {
                         <CardContent className="p-6 space-y-4">
                             <div className="flex items-center gap-3">
                             <Hash className="w-5 h-5 text-gray-500" />
-                            <div>
+                            <div className="w-full">
                                 <p className="text-gray-600 font-medium">User ID</p>
                                 <p className="text-gray-900 font-bold break-all">
-                                {unit.userId?._id || "N/A"}
+                                {unit.userId?._id || "No user assigned"}
                                 </p>
+                                <div className="border-b w-full"/>
                             </div>
                             </div>
                             <div className="flex items-center gap-3">
                             <User className="w-5 h-5 text-gray-500" />
-                            <div>
+                            <div className="w-full">
                                 <p className="text-gray-600 font-medium">Name</p>
                                 <p className="text-gray-900 font-bold">
-                                {unit.userId?.firstName} {unit.userId?.lastName}
+                                    {unit.userId? `${unit.userId?.firstName} ${unit.userId?.lastName}` : "N/A" }
                                 </p>
+                                <div className="border-b w-full"/>
                             </div>
                             </div>
                             <div className="flex items-center gap-3">
                             <Mail className="w-5 h-5 text-gray-500" />
-                            <div>
+                            <div className="w-full">
                                 <p className="text-gray-600 font-medium">Email</p>
-                                <p className="text-gray-900 font-bold">{unit.userId?.email}</p>
+                                <p className="text-gray-900 font-bold">{unit.userId?.email || "N/A"}</p>
+                                <div className="border-b w-full"/>
                             </div>
                             </div>
                         </CardContent>

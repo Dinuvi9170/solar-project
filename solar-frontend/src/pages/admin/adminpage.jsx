@@ -49,8 +49,10 @@ const AdminSolarUnits = () => {
             onChange={(e) => setSearch(e.target.value)}
             className="w-64"
           />
-          <Button className="flex items-center gap-1  bg-blue-500 hover:bg-blue-500/70">
-            <Plus className="w-4 h-4 " /> Add Unit
+          <Button className="flex items-center gap-1  bg-blue-500 hover:bg-blue-500/70"
+            onClick={()=>navigate('/admin/solarunits/createsolarunit')}
+          >
+            <Plus className="w-4 h-4 " /> Add Solar Unit
           </Button>
         </div>
       </div>

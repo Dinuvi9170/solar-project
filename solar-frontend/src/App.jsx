@@ -14,6 +14,7 @@ import AdminLayout from "./layout/adminDashboard";
 import AdminSettings from "./pages/admin/settings";
 import SolarUnitDetail from "./pages/admin/viewSolarUnit";
 import EditSolarUnit from "./pages/admin/edit Solarunit";
+import CreateSolarUnit from "./pages/admin/createSolarunit";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
                 <Route path="/admin/settings" element={ <AdminSettings/> } /> 
                 <Route path="/admin/solarunits/:id" element={ <SolarUnitDetail/> } />
                 <Route path="/admin/solarunits/editsolarunit/:id" element={ <EditSolarUnit/> } />
+                <Route path="/admin/solarunits/createsolarunit" element={ <CreateSolarUnit/> } />
               </Route> 
             </Route> 
           </Route>

@@ -39,6 +39,13 @@ export const api = createApi({
         method:'PUT',
         body:data
       })
+    }),
+    createSolarUnit:build.mutation({
+      query:(data)=>({
+        url:`/solar-units/`,
+        method:'POST',
+        body:data
+      })
     })
   }),
 })
@@ -48,5 +55,6 @@ export const { useGetEnergyRecordsBysolarIdQuery,
   useGetSolarUnitforUserQuery,
   useGetSolarUnitsQuery,
   useGetSolatUnitByIdQuery,
-  useUpdateSolarUnitMutation
+  useUpdateSolarUnitMutation,
+  useCreateSolarUnitMutation
  } = api;

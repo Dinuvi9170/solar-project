@@ -23,12 +23,16 @@ export const createSolarUnit= async(req:Request,res:Response,next:NextFunction)=
         if(!result.success){
             throw new ValidationError(result.error.message);
         }
+        //omit userId if it is null
+        if (!result.data.userId || result.data.userId.trim() === "") {
+            delete result.data.userId;
+        }
         const newSolarUnit={
             installationDate:new Date(result.data.installationDate),
             capasity:result.data.capasity,
             serialNumber:result.data.serialNumber,
             status:result.data.status,
-            userId:result.data.userId
+            ...(result.data.userId && {userId:result.data.userId})
         };
 
         const createdSolarUnit=await SolarUnit.create(newSolarUnit);
