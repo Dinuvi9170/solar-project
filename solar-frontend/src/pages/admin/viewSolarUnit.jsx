@@ -12,7 +12,7 @@ import { useGetSolarUnitByIdQuery } from "@/lib/redux/query";
 const SolarUnitDetail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { data: unit, isLoading } = useGetSolarUnitByIdQuery({ id });
+    const { data: unit, isLoading } = useGetSolarUnitByIdQuery({ id },{refetchOnMountOrArgChange:true});
 
     if (isLoading) {
         return (

@@ -86,7 +86,9 @@ const AdminSolarUnits = () => {
                 {unit.capasity} kW
               </p>
               <div className="flex gap-2 mt-2">
-                <Button size="sm" variant="outline" className="flex-1">
+                <Button size="sm" variant="outline" className="flex-1"
+                  onClick={()=>navigate(`/admin/solarunits/editsolarunit/${unit._id}`)}
+                >
                   <Edit className="w-4 h-4 mr-1" /> Edit
                 </Button>
                 <Button size="sm" onClick={()=>navigate(`/admin/solarunits/${unit._id}`)} 

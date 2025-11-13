@@ -10,7 +10,7 @@ import {useGetSolarUnitByIdQuery,useUpdateSolarUnitMutation} from "@/lib/redux/q
 const EditSolarUnit = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { data: unit, isLoading } = useGetSolarUnitByIdQuery({id});
+  const { data: unit, isLoading} = useGetSolarUnitByIdQuery({id});
   const [updateSolarUnit, { isLoading: isUpdating }] =useUpdateSolarUnitMutation();
 
   const [formData, setFormData] = useState({
@@ -28,7 +28,7 @@ const EditSolarUnit = () => {
         installationDate: unit.installationDate?.split("T")[0] || "",
         capasity: unit.capasity || "",
         status: unit.status || "ACTIVE",
-        userId: unit.userId?._id || "User", 
+        userId: unit.userId?._id || "User" || "", 
       });
     }
   }, [unit]);
@@ -57,7 +57,6 @@ const EditSolarUnit = () => {
         id,
         updateData: { ...formData, capasity: Number(formData.capasity) },
       }).unwrap();
-
       alert("Solar Unit updated successfully!");
       navigate("/admin/solarunits");
     } catch (err) {
