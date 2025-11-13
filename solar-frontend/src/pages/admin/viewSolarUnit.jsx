@@ -1,32 +1,18 @@
 import React from "react";
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
+  Card,CardHeader,CardTitle,CardContent,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
-  Edit,
-  Trash2,
-  BarChart2,
-  ArrowLeft,
-  Loader2,
-  Cpu,
-  CalendarDays,
-  Zap,
-  User,
-  Mail,
-  Hash,
-  Gauge,
+    Edit,Trash2,BarChart2,ArrowLeft,Loader2,Cpu,CalendarDays,Zap,User,Mail,Hash,Gauge,
 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetSolatUnitByIdQuery } from "@/lib/redux/query";
+import { useGetSolarUnitByIdQuery } from "@/lib/redux/query";
 
 const SolarUnitDetail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { data: unit, isLoading } = useGetSolatUnitByIdQuery({ id });
+    const { data: unit, isLoading } = useGetSolarUnitByIdQuery({ id });
 
     if (isLoading) {
         return (

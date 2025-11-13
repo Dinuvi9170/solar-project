@@ -89,9 +89,16 @@ export const updateSolarunit= async (req:Request,res:Response,next:NextFunction)
         const {id} =req.params;
         const result= UpdateSolarUnitDto.safeParse(req.body);
 
+        
         if(!result.success){
             throw new ValidationError(result.error.message);
         }
+
+        //omit userId if it is null
+        if (!result.data.userId || result.data.userId.trim() === "" ||result.data.userId=="User" ) {
+            delete result.data.userId;
+        }
+
         const solarUnit= await SolarUnit.findById(id);
 
         if(solarUnit){ 
@@ -104,12 +111,15 @@ export const updateSolarunit= async (req:Request,res:Response,next:NextFunction)
                 updateData.serialNumber=result.data.serialNumber;
             if(result.data.status)
                 updateData.status=result.data.status;
+            if (result.data.userId && result.data.userId !== "User")
+                updateData.userId = result.data.userId;
             const updateSolarUnit = await SolarUnit.findByIdAndUpdate(id,updateData,{new:true,runValidators: true});
             return res.status(200).json(updateSolarUnit);
         }else{
             throw new NotFoundError("Solar unit not found");
         }
     }catch(error){
+        
         next(error);
     }    
 }
