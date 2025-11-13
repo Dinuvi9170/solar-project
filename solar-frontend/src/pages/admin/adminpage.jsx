@@ -4,12 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Edit, Plus, Loader2, Zap, SquareChartGantt } from "lucide-react";
 import { useGetSolarUnitsQuery } from "@/lib/redux/query";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const AdminSolarUnits = () => {
   const navigate= useNavigate();
-  const {data:units,isLoading,isError,error}= useGetSolarUnitsQuery();
-  console.log(units)
+  const {data:units,isLoading}= useGetSolarUnitsQuery();
   const [search, setSearch] = useState("");
   
   if(isLoading){
@@ -36,7 +35,11 @@ const AdminSolarUnits = () => {
     units.dataUnits?.filter((u) =>
         u.serialNumber.toLowerCase().includes(search.toLowerCase())
       )
-    : units.dataUnits);
+  : units.dataUnits);
+
+  const sortUnits= filteredUnits?[...filteredUnits].sort((a,b)=>
+    a.serialNumber.localeCompare(b.serialNumber)
+  ):[]
 
   return (
     <div className="p-6 w-full h-full bg-gray-100">
@@ -58,7 +61,7 @@ const AdminSolarUnits = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredUnits.map((unit) => (
+        {sortUnits.map((unit) => (
           <Card key={unit._id} className="shadow-lg hover:shadow-xl transition-shadow">
             <CardHeader>
               <CardTitle className="text-md font-semibold flex justify-between items-center">

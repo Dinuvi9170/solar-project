@@ -5,14 +5,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {CalendarDays,Cpu,Gauge,User2,Power,ArrowLeft,Loader2,} from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
-import {useGetSolarUnitByIdQuery,useUpdateSolarUnitMutation} from "@/lib/redux/query";
+import {useGetAllUsersQuery, useGetSolarUnitByIdQuery,useUpdateSolarUnitMutation} from "@/lib/redux/query";
+
 
 const EditSolarUnit = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { data: unit, isLoading} = useGetSolarUnitByIdQuery({id});
   const [updateSolarUnit, { isLoading: isUpdating }] =useUpdateSolarUnitMutation();
-
+  const {data:users,isLoading:loading}= useGetAllUsersQuery();
+  
+  
   const [formData, setFormData] = useState({
     serialNumber: "",
     installationDate: "",
@@ -20,7 +23,7 @@ const EditSolarUnit = () => {
     status: "",
     userId: "",
   });
-
+  
   useEffect(() => {
     if (unit) {
       setFormData({
@@ -32,7 +35,7 @@ const EditSolarUnit = () => {
       });
     }
   }, [unit]);
-
+  
   if (isLoading) {
     return (
       <div className="w-full h-[300px] py-40 bg-gray-100">
@@ -45,7 +48,7 @@ const EditSolarUnit = () => {
       </div>
     );
   }
-
+  
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -131,15 +134,25 @@ const EditSolarUnit = () => {
 
             <div>
               <Label className="flex items-center gap-2 text-gray-700">
-                <User2 className="w-4 h-4 text-purple-500" /> Assigned User ID
+                <User2 className="w-4 h-4 text-purple-500" /> Assigned User
               </Label>
-              <Input
-                type="text"
-                name="userId"
-                value={formData.userId}
-                onChange={handleChange}
-                className="border-gray-300 mt-2"
-              />
+              {!loading && users?.users ? (
+                <select
+                  name="userId"
+                  value={formData.userId}
+                  onChange={handleChange}
+                  className="w-full mt-2 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300"
+                >
+                  <option value="">No user assigned</option>
+                  {users.users.map((user) => (
+                    <option key={user._id} value={user._id}>
+                      {user.firstName} {user.lastName} ({user.email})
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <p>Loading users...</p>
+              )}
             </div>
 
             <div>
@@ -150,7 +163,7 @@ const EditSolarUnit = () => {
                 name="status"
                 value={formData.status}
                 onChange={handleChange}
-                className="w-full mt-2 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 mt-2"
+                className="w-full mt-2 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300 mt-2"
               >
                 <option value="ACTIVE">Active</option>
                 <option value="INACTIVE">Inactive</option>

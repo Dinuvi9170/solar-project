@@ -8,6 +8,7 @@ import { ErrorHandlingMiddleware } from './api/middleware/errorHandling';
 import cors from "cors";
 import webhooksRouter from './api/webhooks';
 import { clerkMiddleware } from '@clerk/express';
+import UserRouter from './api/user';
 
 const server= express();
 
@@ -22,6 +23,7 @@ server.use(express.json());// convert structured data into json
 
 server.use("/api/solar-units",SolarUnitRouter);
 server.use("/api/energyRecords",EnergyRecordRouter);
+server.use("/api/users",UserRouter);
 
 server.use(ErrorHandlingMiddleware);
 

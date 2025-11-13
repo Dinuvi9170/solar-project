@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { CalendarDays, Cpu, Gauge, User2, Power, ArrowLeft, CheckCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {z} from 'zod';
-import { useCreateSolarUnitMutation} from "@/lib/redux/query";
+import { useCreateSolarUnitMutation, useGetAllUsersQuery} from "@/lib/redux/query";
 
 const CreateFormSchema = z.object({
     serialNumber:z.string().min(1,{message:'Serial Number is required'}),
@@ -22,6 +22,7 @@ const CreateFormSchema = z.object({
 const CreateSolarUnit = () => {
   const navigate = useNavigate();
   const [addSolarUnit, { isLoading }] = useCreateSolarUnitMutation();
+  const {data:users, isLoading:loading}= useGetAllUsersQuery();
     
   const {
     register,
@@ -121,12 +122,23 @@ const CreateSolarUnit = () => {
               <Label className="flex items-center gap-2 text-gray-700">
                 <User2 className="w-4 h-4 text-purple-500" /> Assigned UserId
               </Label>
-              <Input
-                type="text"
-                placeholder="e.g. 69103213336e922cb0644ca6"
-                {...register("userId")}
-                className="mt-2"
-              />
+
+              {!loading && users?.users ? (
+                <select
+                  {...register("userId")}
+                  className="w-full mt-2 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300"
+                >
+                  <option value="">No user assigned</option>
+                  {users.users.map((user) => (
+                    <option key={user._id} value={user._id}>
+                      {user.firstName} {user.lastName} ({user.email})
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <p>Loading users...</p>
+              )}
+
               {errors.userId && (
                 <p className="text-red-500 text-sm mt-1">
                   {errors.userId.message}
@@ -139,7 +151,7 @@ const CreateSolarUnit = () => {
               </Label>
               <select
                 {...register("status")}
-                className="w-full mt-2 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                className="w-full mt-2 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300"
               >
                 <option value="ACTIVE">Active</option>
                 <option value="INACTIVE">Inactive</option>

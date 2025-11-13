@@ -46,6 +46,9 @@ export const api = createApi({
         method:'POST',
         body:data
       })
+    }),
+    getAllUsers:build.query({
+      query:()=>`/users/`
     })
   }),
 })
@@ -56,5 +59,6 @@ export const { useGetEnergyRecordsBysolarIdQuery,
   useGetSolarUnitsQuery,
   useGetSolarUnitByIdQuery,
   useUpdateSolarUnitMutation,
-  useCreateSolarUnitMutation
+  useCreateSolarUnitMutation,
+  useGetAllUsersQuery
  } = api;
