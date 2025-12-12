@@ -12,7 +12,6 @@ const seedData = async () => {
     await connectDB();
     console.log(" MongoDB connected");
 
-    // Clear both collections
     await mongoose.connection.collection("solarunits").deleteMany({});
     await mongoose.connection.collection("energyrecords").deleteMany({});
     //await mongoose.connection.collection("users").deleteMany({});
@@ -82,7 +81,6 @@ const seedData = async () => {
     }
     
     await EnergyGenerationRecord.insertMany(energyrecords);
-    // console.log(" Sample Solar Unit and Energy Records inserted successfully");
     await mongoose.disconnect();
     console.log(" MongoDB disconnected");
   } catch (error) {

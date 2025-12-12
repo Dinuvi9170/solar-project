@@ -29,13 +29,7 @@ export function ChartAreaAxes({data}) {
       color: "var(--color-blue-600)",
     }
   } 
-  const sameDay=()=>{
-    if(data && data.length>0){
-      const samedate= data.every((el)=> el._id.date===data[0]._id?.date);
-      return samedate;
-    }
-    return false
-  }
+  const isHourly = data && data.length > 0 && data[0]._id?.hour;
 
   return (
     <Card className={'shadow-none border-none'}>
@@ -51,18 +45,19 @@ export function ChartAreaAxes({data}) {
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey= {sameDay()?"_id.time":"_id.date"} 
+              dataKey= {isHourly?"_id.hour":"_id.date"} 
               tickLine={false}
               axisLine={false}
               tickMargin={8}
               tickFormatter={(value) =>{
-                if (sameDay()) return value;
-                if(data.length>=28){
+                if (isHourly){ 
+                  return value.split(" ")[1];
+                }else if(data.length>=28){
                   return format(new Date(value),"MMM dd")
                 }else if(data.length===7){
                   return format(new Date(value),"EEE")
                 }else{
-                  return format(new Date(value),"HH:MM")
+                  return format(new Date(value),"MMM dd")
                 }
               }}
             />
@@ -75,7 +70,7 @@ export function ChartAreaAxes({data}) {
             />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <Area
-              dataKey={!sameDay()?"totalDayEnergy":"totalHourEnergy"}
+              dataKey={!isHourly?"totalDayEnergy":"totalHourEnergy"}
               type="natural"
               fill="var(--color-totalDayEnergy)"
               fillOpacity={0.4}
@@ -93,7 +88,7 @@ export function ChartAreaAxes({data}) {
           </div>
           <div className="flex items-center gap-1 font-medium">
             <CalendarDays color="gray" className="w-4 h-4" />
-            <span className="text-gray-500">{sameDay()?"Hourly Data":(data.length===7)?"Daily Data":"Daily Data(30 days)"}</span>
+            <span className="text-gray-500">{isHourly?"Hourly Data":(data.length===7)?"Daily Data":"Daily Data(30 days)"}</span>
           </div>  
         </div>
       </CardFooter>

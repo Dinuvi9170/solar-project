@@ -2,6 +2,7 @@ import { getEnergyRecordsBySolaridDto} from "../domain/dtos/solar-unit";
 import { ValidationError } from "../domain/errors/errors";
 import {EnergyGenerationRecord} from "../infrastructure/entity/energyGenerationRecords";
 import {Request,Response,NextFunction} from 'express';
+import mongoose from 'mongoose';
 
 export const getEnergyRecordsBySolarid= async (req:Request,res:Response,next:NextFunction)=>{
     try{
@@ -39,19 +40,42 @@ export const getEnergyRecordsBySolarid= async (req:Request,res:Response,next:Nex
             }
             res.status(200).json(energyrecord.slice(0,parseInt(limit)));
         }
-        if(groupBy==="hour"){
+        if(groupBy === "hour"){
+            const lastrecord = await EnergyGenerationRecord.findOne({
+                SolarUnitId: req.params.id
+            }).sort({ time: -1 }).select("time");
+
+            if (!lastrecord) {
+                return res.status(404).json({ message: "No energy records found" });
+            }
+
+            const latestTime = new Date(lastrecord.time);        
+            const startTime = new Date(latestTime.getTime() - 24 * 60 * 60 * 1000);
+            console.log(startTime)
+
             const energyrecord = await EnergyGenerationRecord.aggregate([
-                {$group:{
-                    _id:{
-                        date:{$dateToString:{format: "%Y-%m-%d", date: "$time"}},
-                        time:{$dateToString:{format: "%H:%M", date: "$time"}}
-                    },
-                    totalHourEnergy: { $sum: "$energyGenerated" }
-                    ,
-                }},{
-                    $sort:{"_id.date":-1}
-                }
-            ])
+                {
+                    $match: {
+                        SolarUnitId: new mongoose.Types.ObjectId(req.params.id),
+                        time: { $gte: startTime, $lte: latestTime }
+                    }
+                },
+                {
+                    $group: {
+                        _id: {
+                            hour: {
+                                $dateToString: {
+                                    format: "%Y-%m-%d %H:00",
+                                    date: "$time",
+                                    timezone: "UTC"
+                                }
+                            }
+                        },
+                        totalHourEnergy: { $sum: "$energyGenerated" }
+                    }
+                },
+                { $sort: { "_id.hour": -1 } } 
+            ]);
             res.status(200).json(energyrecord);
         }
     }catch(error){

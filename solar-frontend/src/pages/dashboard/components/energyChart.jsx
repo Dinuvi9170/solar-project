@@ -40,14 +40,12 @@ const EnergyChart =()=>{
         const value= e.target.value;
         if(value==='month'){
             setlimit(30);
+            setfilterData(dailydata?.slice(0, 30));
         }else if(value==='week'){
             setlimit(7);
+            setfilterData(dailydata?.slice(0, 7));
         }else{
-            const selectedDate = hourlydata?.[0]?._id?.date;
-            const sameDayData = hourlydata?.filter(
-            (el) => el._id?.date === selectedDate
-            );
-            setfilterData(sameDayData);
+            setfilterData(hourlydata);
         }
     }
 
