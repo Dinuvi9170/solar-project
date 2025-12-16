@@ -1,9 +1,9 @@
 //import s from "./navbar.module.css";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
-import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
-import { useState } from "react";
+import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/clerk-react";
 const Navigation =()=>{
+    const { user } = useUser();
     return (
         <nav className={"px-12 py-6 flex items-center justify-between "}>
             <Link to="/" className={"flex items-center gap-3"}>
@@ -28,7 +28,7 @@ const Navigation =()=>{
                 <span className={"text-lg font-semibold font-[Inter]"}>Aelora</span>
             </Link>
             <div className={"flex  gap-5"}>
-                <SignedIn asChild>
+                <SignedIn >
                     <Link to="/dashboard" className={"flex items-center px-3 py-2"}>
                         <svg 
                             xmlns="http://www.w3.org/2000/svg" 
@@ -48,10 +48,18 @@ const Navigation =()=>{
                         </svg>    
                         <span className={"text-sm weight-medium font-[Inter]"}>Dashboard</span>
                     </Link>
+                    {user?.publicMetadata?.role === "admin" && (
+                        <Link
+                        to="/admin"
+                        className="flex items-center px-3 py-2 gap-1 hover:text-red-600 font-semibold"
+                        >
+                        Admin
+                        </Link>
+                    )}
                 </SignedIn>
                 <div className={"flex items-center px-3 py-2 gap-[10px]" }>
                     <SignedOut>
-                        <Button>
+                        <Button asChild>
                             <Link to='/sign-in'>Sign In</Link>
                         </Button>
                     </SignedOut> 

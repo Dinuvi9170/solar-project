@@ -23,7 +23,7 @@ const SolarEnergyProduction= ()=>{
     
     //automatically handle fetching data
     const {data,isError,error,isLoading}=useGetEnergyRecordsBysolarIdQuery(
-        {id:solarunit?._id,groupBy:"date",limit:7});
+        {id:solarunit?._id,groupBy:"date",limit:7},{skip:!solarunit?._id});
     
     if(!solarunit?._id) return null;
     

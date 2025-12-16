@@ -32,12 +32,13 @@ function App() {
               <Route path="/dashboard/anomaly" element={ <Anomaly/> } />
             </Route>
             <Route element={<Authorizedlayout/>}>
-              <Route path='/admin' element={ <AdminLayout/> } >  
-                <Route path="/admin/solarunits" element={ <AdminSolarUnits/> } /> 
-                <Route path="/admin/settings" element={ <AdminSettings/> } /> 
-                <Route path="/admin/solarunits/:id" element={ <SolarUnitDetail/> } />
-                <Route path="/admin/solarunits/editsolarunit/:id" element={ <EditSolarUnit/> } />
-                <Route path="/admin/solarunits/createsolarunit" element={ <CreateSolarUnit/> } />
+              <Route path='/admin' element={ <AdminLayout/> } >
+                <Route index element={<AdminSolarUnits />} /> 
+                <Route path="solarunits" element={ <AdminSolarUnits/> } /> 
+                <Route path="settings" element={ <AdminSettings/> } /> 
+                <Route path="solarunits/:id" element={ <SolarUnitDetail/> } />
+                <Route path="solarunits/editsolarunit/:id" element={ <EditSolarUnit/> } />
+                <Route path="solarunits/createsolarunit" element={ <CreateSolarUnit/> } />
               </Route> 
             </Route> 
           </Route>

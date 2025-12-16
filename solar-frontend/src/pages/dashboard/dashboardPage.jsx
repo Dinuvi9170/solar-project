@@ -12,7 +12,15 @@ const DashboardPage =()=>{
     const {data:solarunit}=useGetSolarUnitforUserQuery(undefined,{skip:!user});
 
     const {data,isLoading,isError,error}=useGetEnergyRecordsBysolarIdQuery({id:solarunit?._id, groupBy:"date"});
-    
+    if(isLoading){
+        return(
+        <div className="w-full h-screen py-40 bg-gray-100">
+            <div className="flex flex-col px-150 justify-center items-center">
+                <Loader2 className="w-6 h-6 animate-spin"/>
+                <span className="font-semibold text-xl animation-pulse text-gray-700">Loading...</span>
+            </div>
+        </div>)
+    }
     if(!solarunit?._id){
         return (
         <div className="w-full bg-gray-100 flex h-screen">
@@ -23,15 +31,6 @@ const DashboardPage =()=>{
         )
     }
     
-    if(isLoading){
-        return(
-        <div className="w-full h-[300px] py-40 bg-white">
-            <div className="flex flex-col px-150 justify-center items-center">
-                <Loader2 className="w-6 h-6 animate-spin"/>
-                <span className="font-semibold text-xl animation-pulse text-gray-700">Loading...</span>
-            </div>
-        </div>)
-    }
     if(!data || isError){
         return(
             <div>Error:{error.message}</div>
