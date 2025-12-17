@@ -9,6 +9,7 @@ import cors from "cors";
 import webhooksRouter from './api/webhooks';
 import { clerkMiddleware } from '@clerk/express';
 import UserRouter from './api/user';
+import { startEnergySyncJob } from './application/background/energy-sync-cron';
 
 const server= express();
 
@@ -28,6 +29,8 @@ server.use("/api/users",UserRouter);
 server.use(ErrorHandlingMiddleware);
 
 connectDB();
+startEnergySyncJob();
+
 const PORT=process.env.PORT||8000;
 server.listen(PORT,()=>{
     console.log(`The server is running on port ${PORT} `);
