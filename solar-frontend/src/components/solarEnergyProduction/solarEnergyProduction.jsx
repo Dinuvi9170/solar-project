@@ -42,14 +42,18 @@ const SolarEnergyProduction= ()=>{
         )
     }
     
-    const Days= data.map((el)=>({
-        ...el,
-        date: new Date(el._id.date),
-        isAnomaly:false     
-    }))
+    const Days = data?.length > 0
+        ? data.map((el) => ({
+            ...el,
+            date: new Date(el._id.date),
+            isAnomaly: false,
+          }))
+        : [];
 
-    const lastrecord= Days[0];
-    const sevendayago= subDays(new Date(lastrecord.date),6);
+    if (Days.length === 0) return null;
+
+    const lastrecord = Days[0];
+    const sevendayago = subDays(new Date(lastrecord.date), 6);
 
     const weekData= Days.filter((day)=>{
         return day.date>=sevendayago
