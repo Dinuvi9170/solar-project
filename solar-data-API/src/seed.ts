@@ -62,11 +62,43 @@ const seedData = async () => {
       }
 
       const variation= 0.8+Math.random()*0.4;
-      const energyGenerated=Math.round(baseEnergy*timemultipler*variation);
+      let energyGenerated=Math.round(baseEnergy*timemultipler*variation);
+
+      //normal sensor values
+      let temperature = 30 + Math.random() * 20; // normal 30–50°C
+      let vibration = Math.random() * 2;          // normal 0–2
+      let mechanicalIssue = false;
+
+      const anomalyChance = Math.random();
+
+      // Power Output Deviation (low power)
+      if (anomalyChance < 0.05) {
+        energyGenerated = Math.round(energyGenerated * 0.2); // sudden drop
+      }
+
+      // Power Output Inflation (above capacity)
+      if (anomalyChance >= 0.05 && anomalyChance < 0.08) {
+        energyGenerated = Math.round(energyGenerated * 1.6); // unrealistic high
+      }
+
+      // Temperature Anomaly
+      if (anomalyChance >= 0.08 && anomalyChance < 0.11) {
+        temperature = 85 + Math.random() * 15; // overheating
+      }
+
+      // Vibration + Mechanical Anomaly
+      if (anomalyChance >= 0.11 && anomalyChance < 0.14) {
+        vibration = 6 + Math.random() * 4; // high vibration
+        mechanicalIssue = true;
+      }
+
       energyrecords.push({
         serialNumber:serialNumber,
         time: new Date(currentDate),
-        energyGenerated:energyGenerated
+        energyGenerated:energyGenerated,
+        temperature:temperature,
+        vibration:vibration,
+        mechanicalIssue:mechanicalIssue
       })
       //move to next 2 hours interval
       currentDate=new Date(currentDate.getTime()+2*60*60*1000);

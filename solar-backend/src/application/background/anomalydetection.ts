@@ -1,6 +1,6 @@
-import { EnergyGenerationRecord } from "../infrastructure/entity/energyGenerationRecords";
-import { SolarUnit } from "../infrastructure/entity/solar-units";
-import Anomalies from "../infrastructure/entity/anomalies";
+import { EnergyGenerationRecord } from "../../infrastructure/entity/energyGenerationRecords";
+import { SolarUnit } from "../../infrastructure/entity/solar-units"; 
+import Anomalies from "../../infrastructure/entity/anomalies";
 
 export async function detectAnomalies() {
     const POWER_DEVIATION_RATIO = 0.3;   // <30% of expected
@@ -9,8 +9,7 @@ export async function detectAnomalies() {
     const VIBRATION_THRESHOLD = 5;       // unit
 
     const records = await EnergyGenerationRecord.find()
-        .sort({ time: -1 })
-        .limit(20);
+        .sort({ time: -1 });
 
     for (const rec of records) {
         const solarUnit = await SolarUnit.findById(rec.SolarUnitId);

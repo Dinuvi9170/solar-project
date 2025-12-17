@@ -12,6 +12,9 @@ export const DataEnergyRecordsDto = z.object({
   time: z.string(),
   energyGenerated: z.number(),
   intervalHours: z.number(),
+  temperature: z.number().nullable(),
+  vibration: z.number().nullable(),
+  mechanicalIssue: z.boolean().nullable()
 });
 
 export const syncMiddleware = async (req: Request, res: Response, next: NextFunction) => {
@@ -25,6 +28,10 @@ export const syncMiddleware = async (req: Request, res: Response, next: NextFunc
     const solarUnit = await SolarUnit.findOne({ userId: user._id });
     if (!solarUnit) {
       throw new NotFoundError("Solar Unit not found");
+    }
+    if (!solarUnit.serialNumber || typeof solarUnit.serialNumber !== 'string') {
+      console.log(`Skipping sync for solar unit with invalid serialNumber: ${solarUnit._id}`);
+      return next();
     }
 
     // Fetch the missing energy records
@@ -53,7 +60,10 @@ export const syncMiddleware = async (req: Request, res: Response, next: NextFunc
         time: record.time,
         energyGenerated: record.energyGenerated,
         intervalHours: record.intervalHours,
-        SolarUnitId: solarUnit._id
+        SolarUnitId: solarUnit._id,
+        temperature: record.temperature,
+        vibration: record.vibration,
+        mechanicalIssue: record.mechanicalIssue
       }));
       await EnergyGenerationRecord.insertMany(recordsToInsert);
       console.log(`${missingRecords.length} new records synced.`);

@@ -11,7 +11,8 @@ const DashboardPage =()=>{
     
     const {data:solarunit}=useGetSolarUnitforUserQuery(undefined,{skip:!user});
 
-    const {data,isLoading,isError,error}=useGetEnergyRecordsBysolarIdQuery({id:solarunit?._id, groupBy:"date"});
+    const {data,isLoading,isError,error}=useGetEnergyRecordsBysolarIdQuery(
+        {id:solarunit?._id, groupBy:"date"},{ skip: !solarunit?._id });
     if(isLoading){
         return(
         <div className="w-full h-screen py-40 bg-gray-100">

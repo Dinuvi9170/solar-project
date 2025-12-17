@@ -1,14 +1,14 @@
 import mongoose from 'mongoose';
 
 const AnomaliesSchema= new mongoose.Schema({
-    solarUnitid:{
+    solarUnitId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"SolarUnit",
         required:true
     },
     anomalyType:{
         type:String,
-        enum:['viabration','temperature','PowerOutput','Mechanical'],
+        enum:['Vibration','Temperature','PowerOutput','Mechanical'],
         required:true
     },
     severity:{
