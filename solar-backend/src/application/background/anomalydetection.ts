@@ -26,6 +26,7 @@ export async function detectAnomalies() {
             anomalyType: "PowerOutput",
             severity: "medium",
             description: `Low power output detected. Expected ≈ ${expectedEnergy} kWh, got ${rec.energyGenerated} kWh`,
+            detection_time: rec.time,
         });
         }
 
@@ -35,6 +36,7 @@ export async function detectAnomalies() {
             anomalyType: "PowerOutput",
             severity: "high",
             description: `Energy exceeds capacity. Max ≈ ${expectedEnergy} kWh, got ${rec.energyGenerated} kWh`,
+            detection_time: rec.time,
         });
         }
 
@@ -44,6 +46,7 @@ export async function detectAnomalies() {
             anomalyType: "Temperature",
             severity: "high",
             description: `High temperature detected: ${rec.temperature}°C`,
+            detection_time: rec.time,
         });
         }
 
@@ -53,6 +56,7 @@ export async function detectAnomalies() {
             anomalyType: "Vibration",
             severity: "medium",
             description: `Excessive vibration detected: ${rec.vibration}`,
+            detection_time: rec.time,
         });
         }
 
@@ -62,6 +66,7 @@ export async function detectAnomalies() {
             anomalyType: "Mechanical",
             severity: "medium",
             description: "Mechanical issue reported by sensor/system",
+            detection_time: rec.time,
         });
         }
 
@@ -69,7 +74,7 @@ export async function detectAnomalies() {
         const exists = await Anomalies.findOne({
             solarUnitId: anomaly.solarUnitId,
             anomalyType: anomaly.anomalyType,
-            resolved: false
+            detection_time: rec.time
         });
 
         if (!exists) {

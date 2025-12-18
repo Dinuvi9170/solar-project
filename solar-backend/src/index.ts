@@ -10,6 +10,7 @@ import webhooksRouter from './api/webhooks';
 import { clerkMiddleware } from '@clerk/express';
 import UserRouter from './api/user';
 import { startEnergySyncJob } from './application/background/energy-sync-cron';
+import Anomalyrouter from './api/anomaly';
 
 const server= express();
 
@@ -25,6 +26,7 @@ server.use(express.json());// convert structured data into json
 server.use("/api/solar-units",SolarUnitRouter);
 server.use("/api/energyRecords",EnergyRecordRouter);
 server.use("/api/users",UserRouter);
+server.use("/api/anomalies",Anomalyrouter);
 
 server.use(ErrorHandlingMiddleware);
 

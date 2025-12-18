@@ -49,7 +49,13 @@ export const api = createApi({
     }),
     getAllUsers:build.query({
       query:()=>`/users/`
-    })
+    }),
+    getAnomaliesBySolarUnitId: build.query({
+      query: ({id,groupBy,limit}) => `/anomalies/solar-unit/${id}?groupBy=${groupBy}${limit?`&limit=${limit}`:""}`,
+    }),
+    getAnomalyCountByType: build.query({
+      query: ({id, anomalyType}) => `/anomalies/solar-unit/${id}/${anomalyType}`,
+    }),
   }),
 })
 
@@ -60,5 +66,7 @@ export const { useGetEnergyRecordsBysolarIdQuery,
   useGetSolarUnitByIdQuery,
   useUpdateSolarUnitMutation,
   useCreateSolarUnitMutation,
-  useGetAllUsersQuery
+  useGetAllUsersQuery,
+  useGetAnomaliesBySolarUnitIdQuery,
+  useGetAnomalyCountByTypeQuery
  } = api;
