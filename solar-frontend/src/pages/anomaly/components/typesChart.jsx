@@ -25,9 +25,6 @@ const TypesData= ()=>{
             <div>Error: {error?.message}</div>
         )
     }
-    console.log("Anomaly Types Data:", anomalyTypes);
-    const totalAnomalies= anomalyTypes.reduce((sum,type)=>sum+type.count,0);
-
     const perType = anomalyTypes.map((type)=>({
         anomalyType: type.anomalyType,
         count: type.count,

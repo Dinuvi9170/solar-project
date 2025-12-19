@@ -25,8 +25,9 @@ const AnomaliesSchema= new mongoose.Schema({
         required:true
     },
     resolved:{
-        type:Boolean,
-        default:false
+        type:String,
+        enum:['active','under review','resolved'],
+        default:'active'
     }  
 })
 

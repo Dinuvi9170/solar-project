@@ -11,15 +11,19 @@ export const getAnomaliesBySolarid = async (req: Request,res: Response,next: Nex
             throw new ValidationError(result.error.message);
         }
         const { groupBy,limit } = result.data
+
         const solarUnitId = new mongoose.Types.ObjectId(req.params.id);
 
         if (!groupBy) {
-        const anomalies = await Anomalies.find({
-            solarUnitId,
-            resolved: false,
-        }).sort({ detection_time: -1 });
+            const anomalies = await Anomalies.find({
+                solarUnitId,
+                resolved: { $ne: "resolved" },
+            }).sort({ detection_time: -1 });
+            if(!limit){
+                return res.status(200).json(anomalies);
+            }
 
-        return res.status(200).json(anomalies);
+            return res.status(200).json(anomalies.slice(0,parseInt(limit)));
         }
 
         if (groupBy === "weekly") {
@@ -27,7 +31,7 @@ export const getAnomaliesBySolarid = async (req: Request,res: Response,next: Nex
                 {
                 $match: {
                     solarUnitId,
-                    resolved: false,
+                    resolved: { $ne: "resolved" },
                 },
                 },
                 {
@@ -55,7 +59,7 @@ export const getAnomaliesBySolarid = async (req: Request,res: Response,next: Nex
                 {
                     $match: {
                         solarUnitId,
-                        resolved: false,
+                        resolved: { $ne: "resolved" },
                     },
                 },
                 {
@@ -86,7 +90,7 @@ export const getAnomaliesBySolarid = async (req: Request,res: Response,next: Nex
         if (groupBy === "hourly") {
             const lastrecord = await Anomalies.findOne({
                 solarUnitId,
-                resolved: false
+                resolved: { $ne: "resolved" }
             }).sort({ detection_time: -1 }).select("detection_time");
 
             if (!lastrecord) {
@@ -100,7 +104,7 @@ export const getAnomaliesBySolarid = async (req: Request,res: Response,next: Nex
                 {
                     $match: {
                         solarUnitId,
-                        resolved: false,
+                        resolved: { $ne: "resolved" },
                         detection_time: { $gte: startTime, $lte: latestTime }
                     },
                 },
@@ -154,7 +158,7 @@ export const getAnomaliesByType = async (req: Request, res: Response, next: Next
             {
                 $match: {
                     solarUnitId,
-                    resolved: false,
+                    resolved: { $ne: "resolved" },
                     detection_time: { $gte: oneMonthAgo },
                 },
             },
@@ -178,3 +182,37 @@ export const getAnomaliesByType = async (req: Request, res: Response, next: Next
         next(err);
     }
 };
+
+export const getresolveStatusCounts = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const solarUnitId = new mongoose.Types.ObjectId(req.params.id);
+        const oneMonthAgo = new Date();
+        oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+
+        const statusCounts = await Anomalies.aggregate([
+            {
+                $match: {
+                    solarUnitId,
+                    detection_time: { $gte: oneMonthAgo },
+                },
+            },
+            {
+                $group: {
+                    _id: "$resolved",
+                    count: { $sum: 1 },
+                },
+            },
+        ]);
+
+        const statuses = ["active", "under review", "resolved"];
+        const response = statuses.map((status) => {
+            const found = statusCounts.find((s) => s._id === status);
+            return { status, count: found ? found.count : 0 };
+        });
+
+        res.status(200).json(response);
+    } catch (err) {
+        next(err);
+    }
+};
+
