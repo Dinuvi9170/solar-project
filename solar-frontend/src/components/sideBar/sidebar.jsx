@@ -1,8 +1,9 @@
-import { LayoutDashboard,TriangleAlert,ChartLine,UsersRound, Wind } from "lucide-react"
+import { LayoutDashboard,TriangleAlert,ChartLine,UsersRound, Wind, ChevronUp } from "lucide-react"
 
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -10,9 +11,17 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { Link, useLocation } from "react-router-dom"
 
-// Menu items.
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem
+} from "@/components/ui/dropdown-menu";
+
+import { Link, useLocation } from "react-router-dom"
+import { useClerk, useUser } from "@clerk/clerk-react";
+
 const items = [
   {
     title: "Dashboard",
@@ -28,7 +37,7 @@ const items = [
   },
   {
     title: "Analytics",
-    url: "/dashboard/analitics",
+    url: "#",
     icon: ChartLine ,
     name:"analytics"
   },
@@ -44,6 +53,11 @@ const items = [
 export function AppSidebar() {
   const location =useLocation()
   const path= location.pathname;
+
+  const { user, isSignedIn } = useUser();
+  const clerk= useClerk();
+
+  if (!isSignedIn || !user) return null;
 
   const Setclass=(url)=>{
       if(path===url){
@@ -80,6 +94,34 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <SidebarMenuButton className="flex items-center justify-between">
+                    <span>{user.firstName}  {user.lastName}</span>
+                    <ChevronUp className="ml-auto" />
+                  </SidebarMenuButton>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  side="top"
+                  className="w-[--radix-popper-anchor-width]"
+                >
+                  <DropdownMenuItem>
+                    <span>Account</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link to="/billing">Billing</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => clerk.signOut()}>
+                    <span>Sign out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarFooter>
     </Sidebar>
   )
 }
