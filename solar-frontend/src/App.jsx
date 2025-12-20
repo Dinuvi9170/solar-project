@@ -15,6 +15,8 @@ import AdminSettings from "./pages/admin/settings";
 import SolarUnitDetail from "./pages/admin/viewSolarUnit";
 import EditSolarUnit from "./pages/admin/edit Solarunit";
 import CreateSolarUnit from "./pages/admin/createSolarunit";
+import InvoicesPage from "./pages/invoices/invoicepage";
+import PaymentPage from "./pages/invoices/paymentpage";
 
 function App() {
   return (
@@ -30,6 +32,8 @@ function App() {
             <Route element={ <DashboardLayout/> } >  
               <Route path="/dashboard" element={ <DashboardPage/> } />
               <Route path="/dashboard/anomaly" element={ <Anomaly/> } />
+              <Route path="/dashboard/invoices" element={ <InvoicesPage/> } />
+              <Route path= "/dashboard/invoices/:invoiceId/pay" element={<PaymentPage/>}/>
             </Route>
             <Route element={<Authorizedlayout/>}>
               <Route path='/admin' element={ <AdminLayout/> } >

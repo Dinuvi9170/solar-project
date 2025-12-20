@@ -66,6 +66,32 @@ export const api = createApi({
     getAnomalyCountByType: build.query({
       query: ({id, anomalyType}) => `/anomalies/solar-unit/${id}/${anomalyType}`,
     }),
+    getInvoice:build.query({
+      query:()=>'/invoices',
+    }),
+    getInvoiceById: build.query({
+      query: ({invoiceId})=>`/invoices/${invoiceId}`,
+    }),
+    createInvoice: build.mutation({
+      query: ()=>({
+        url: "/invoices/generate",
+        method: "POST",
+      }),
+      invalidatesTags: ["Invoice"],
+    }),
+    createPaymentSession: build.mutation({
+      query: (invoiceId) => ({
+        url: "/payments/create-checkout-session",
+        method: "POST",
+        body: { invoiceId },
+      }),
+    }),
+    getSessionStatus: build.query({
+      query: (sessionId) => ({
+        url: "/payments/session-status",
+        params: { session_id: sessionId },
+      })
+    })
   }),
 })
 
@@ -79,5 +105,10 @@ export const { useGetEnergyRecordsBysolarIdQuery,
   useGetAllUsersQuery,
   useGetAnomaliesBySolarUnitIdQuery,
   useGetAnomalyResolveStatusQuery,
-  useGetAnomalyCountByTypeQuery
+  useGetAnomalyCountByTypeQuery,
+  useGetInvoiceQuery,
+  useGetInvoiceByIdQuery,
+  useCreateInvoiceMutation,
+  useCreatePaymentSessionMutation,
+  useGetSessionStatusQuery
  } = api;

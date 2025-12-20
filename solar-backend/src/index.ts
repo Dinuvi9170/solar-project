@@ -11,6 +11,10 @@ import { clerkMiddleware } from '@clerk/express';
 import UserRouter from './api/user';
 import { startEnergySyncJob } from './application/background/energy-sync-cron';
 import Anomalyrouter from './api/anomaly';
+import InvoiceRouter from './api/invoice';
+import { startInvoiceCronJob } from './application/background/invoiceGeneration/invoicegeneration-cron';
+import PaymentRouter from './api/payment';
+import { handleStripeWebhook } from './application/stripe/stripe.webhooks';
 
 const server= express();
 
@@ -18,7 +22,14 @@ server.use(cors({origin:"http://localhost:5173"}));
 
 server.use(LoggerMiddleware);
 
+server.use(
+  "/api/stripe/webhooks",
+  express.raw({ type: "application/json" }),
+  handleStripeWebhook
+);
+
 server.use("/api/webhooks",webhooksRouter);
+
 server.use(clerkMiddleware());
 
 server.use(express.json());// convert structured data into json
@@ -27,11 +38,14 @@ server.use("/api/solar-units",SolarUnitRouter);
 server.use("/api/energyRecords",EnergyRecordRouter);
 server.use("/api/users",UserRouter);
 server.use("/api/anomalies",Anomalyrouter);
+server.use("/api/invoices",InvoiceRouter);
+server.use("/api/payments",PaymentRouter);
 
 server.use(ErrorHandlingMiddleware);
 
 connectDB();
 startEnergySyncJob();
+startInvoiceCronJob();
 
 const PORT=process.env.PORT||8000;
 server.listen(PORT,()=>{

@@ -19,7 +19,7 @@ import {
   DropdownMenuItem
 } from "@/components/ui/dropdown-menu";
 
-import { Link, useLocation } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useClerk, useUser } from "@clerk/clerk-react";
 
 const items = [
@@ -56,6 +56,7 @@ export function AppSidebar() {
 
   const { user, isSignedIn } = useUser();
   const clerk= useClerk();
+  const navigate= useNavigate();
 
   if (!isSignedIn || !user) return null;
 
@@ -112,7 +113,7 @@ export function AppSidebar() {
                     <span>Account</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <Link to="/billing">Billing</Link>
+                    <button onClick={() => {navigate("/dashboard/invoices");window.location.reload()}}>Billing</button>
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => clerk.signOut()}>
                     <span>Sign out</span>

@@ -23,10 +23,9 @@ const SolarUnitSchema = new mongoose.Schema({
         required:true,
         enum:["ACTIVE","INACTIVE","MAINTAINANCE"]
     },
-    // houseId:{
-    //     type:mongoose.Schema.Types.ObjectId,
-    //     ref:"House",
-    //     required:true
-    // }
+    ratePerKwh: {
+        type: Number,
+        default: 0.25, // default price per kWh
+    }
 })
 export const SolarUnit= mongoose.model("solarunits",SolarUnitSchema);
