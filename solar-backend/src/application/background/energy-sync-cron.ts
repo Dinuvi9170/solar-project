@@ -1,5 +1,5 @@
 import cron from "node-cron";
-import { syncMiddleware } from "./sync-energyrecord-background";
+import { syncEnergyRecords} from "./sync-energyrecord-background";
 
 // Runs every day at 00:00 (midnight)
 export const startEnergySyncJob = () => {
@@ -7,10 +7,10 @@ export const startEnergySyncJob = () => {
     "0 0 * * *",
     async () => {
       console.log("🕛 Running daily energy sync job...");
-      await syncMiddleware();
+      await syncEnergyRecords();
     },
     {
-      timezone: "UTC" // change if needed: "Asia/Colombo"
+      timezone: "UTC" 
     }
   );
 };

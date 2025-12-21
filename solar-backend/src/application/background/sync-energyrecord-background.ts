@@ -1,56 +1,59 @@
-import { SolarUnit } from "../../infrastructure/entity/solar-units";
 import { EnergyGenerationRecord } from "../../infrastructure/entity/energyGenerationRecords";
+import { SolarUnit } from "../../infrastructure/entity/solar-units";
 import z from "zod";
 
 export const DataEnergyRecordsDto = z.object({
-  _id: z.string(),
+  _id: z.string().optional(),
   serialNumber: z.string(),
   time: z.string(),
   energyGenerated: z.number(),
   intervalHours: z.number(),
+  temperature: z.number().nullable().optional(),
+  vibration: z.number().nullable().optional(),
+  mechanicalIssue: z.boolean().nullable().optional()
 });
 
-export const syncMiddleware = async () => {
+type EnergyRecordData = z.infer<typeof DataEnergyRecordsDto>;
+
+export const syncEnergyRecords = async (): Promise<void> => {
   try {
     const solarUnits = await SolarUnit.find();
-    
-    for(const solarUnit of solarUnits) {
-        // Fetch the missing energy records
-        const dataResponse = await fetch(
-        `http://localhost:8001/api/energyRecords/solar-unit/${solarUnit.serialNumber}`
-        );
-        if (!dataResponse.ok) {
-        throw new Error("Failed to fetch energy records from data API");
-        }
+    if (!solarUnits.length) return;
 
-        const latestEnergyRecords = DataEnergyRecordsDto.array().parse(await dataResponse.json());
+    for (const solarUnit of solarUnits) {
+      const latestRecord = await EnergyGenerationRecord.findOne({
+        SolarUnitId: solarUnit._id
+      }).sort({ time: -1 });
 
-        const existingRecords = await EnergyGenerationRecord.find({
-        serialNumber: solarUnit.serialNumber,
-        }).sort({ time: 1 });
+      const apiUrl = `http://localhost:8001/api/energyRecords/solar-unit/${solarUnit.serialNumber}`;
+      const response = await fetch(apiUrl);
+      if (!response.ok) continue;
 
-        const missingRecords = latestEnergyRecords.filter((record: any) => {
-        return !existingRecords.some(
-            (existingRecord: any) => existingRecord.time.toISOString() === record.time
-        );
-        });
+      const apiData = await response.json();
+      if (!Array.isArray(apiData)) continue;
 
-        if (missingRecords.length > 0) {
-        const recordsToInsert = missingRecords.map(record => ({
-            serialNumber: record.serialNumber,
-            time: record.time,
-            energyGenerated: record.energyGenerated,
-            intervalHours: record.intervalHours,
-            SolarUnitId: solarUnit._id
-        }));
-        await EnergyGenerationRecord.insertMany(recordsToInsert);
-        console.log(`${missingRecords.length} new records synced.`);
-        } else {
-        console.log("No new records to sync.");
-        }
+      const missingRecords = latestRecord
+        ? apiData.filter(
+            r => new Date(r.time) > new Date(latestRecord.time)
+          )
+        : apiData;
+
+      if (!missingRecords.length) continue;
+
+      await EnergyGenerationRecord.insertMany(
+        missingRecords.map(r => ({
+          time: new Date(r.time),
+          energyGenerated: r.energyGenerated,
+          intervalHours: r.intervalHours,
+          SolarUnitId: solarUnit._id,
+          temperature: r.temperature ?? null,
+          vibration: r.vibration ?? null,
+          mechanicalIssue: r.mechanicalIssue ?? null
+        })),
+        { ordered: false }
+      );
     }
-
-  } catch (error) {
-    console.error("Error during sync:", error);
+  } catch (err) {
+    console.error("syncEnergyRecords error:", err);
   }
 };

@@ -17,6 +17,8 @@ const SolarEnergyProduction= ()=>{
 
     const [isClickedtab, SetisClickedtab]=useState(Tabs[0].value);
 
+    const CAPACITY_FACTOR_THRESHOLD = 20;
+
     const handleClickTab=((value)=>{
         SetisClickedtab(value)
     })
@@ -38,16 +40,28 @@ const SolarEnergyProduction= ()=>{
     }
     if(!data || isError){
         return(
-            <div>Error:{error.message}</div>
+            <div>Error: {error?.message}</div>
         )
     }
     
     const Days = data?.length > 0
-        ? data.map((el) => ({
-            ...el,
-            date: new Date(el._id.date),
-            isAnomaly: false,
-          }))
+        ? data.map((el) => {
+            const date = new Date(el._id.date);
+
+            const capacityKW = solarunit.capasity/10; 
+            const theoreticalMax = capacityKW * 12; 
+
+            const capacityFactor =
+                theoreticalMax > 0
+                ? (Number(el.totalDayEnergy) / theoreticalMax) * 100
+                : 0;
+
+                return{
+                    ...el,
+                    date,
+                    isAnomaly:capacityFactor < CAPACITY_FACTOR_THRESHOLD ,
+                }
+            })
         : [];
 
     if (Days.length === 0) return null;
@@ -80,7 +94,6 @@ const SolarEnergyProduction= ()=>{
                 <h2 className="text-2xl font-bold mb-2">Solar Energy Production</h2>
                 <p className="text-gray-600">Daily energy output for the past 7 days</p>
            </div>
-           {/* button handling */}
            <div className="flex gap-3 ">
                 {Tabs.map((tab)=>{
                     return(
@@ -93,7 +106,6 @@ const SolarEnergyProduction= ()=>{
                     )
                 })}
            </div>
-           {/* cards handling */}
            <div>
                 {filterData.length===0?(
                     <div className="px-10 py-10">

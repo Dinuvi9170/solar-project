@@ -1,4 +1,4 @@
-import { LayoutDashboard,TriangleAlert,ChartLine,UsersRound, Wind, ChevronUp } from "lucide-react"
+import { LayoutDashboard,TriangleAlert, Wind, ChevronUp, Receipt } from "lucide-react"
 
 import {
   Sidebar,
@@ -36,18 +36,11 @@ const items = [
     name:"anomaly"
   },
   {
-    title: "Analytics",
-    url: "#",
-    icon: ChartLine ,
-    name:"analytics"
+    title: "Invoices",
+    url: "/dashboard/invoices",
+    icon: Receipt ,
+    name:"Invoices"
   },
-  {
-    title: "Users",
-    url: "#",
-    icon: UsersRound,
-    name:"users"
-  },
-  
 ]
 
 export function AppSidebar() {
@@ -111,9 +104,6 @@ export function AppSidebar() {
                 >
                   <DropdownMenuItem>
                     <span>Account</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <button onClick={() => {navigate("/dashboard/invoices");window.location.reload()}}>Billing</button>
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => clerk.signOut()}>
                     <span>Sign out</span>
