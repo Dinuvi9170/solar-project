@@ -6,7 +6,7 @@ export const startEnergySyncJob = () => {
   cron.schedule(
     "0 0 * * *",
     async () => {
-      console.log("🕛 Running daily energy sync job...");
+      console.log("Running daily energy sync job...");
       await syncEnergyRecords();
     },
     {

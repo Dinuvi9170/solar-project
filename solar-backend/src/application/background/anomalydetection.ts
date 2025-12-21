@@ -3,85 +3,109 @@ import { SolarUnit } from "../../infrastructure/entity/solar-units";
 import Anomalies from "../../infrastructure/entity/anomalies";
 
 export async function detectAnomalies() {
-    const POWER_DEVIATION_RATIO = 0.3;   // <30% of expected
-    const POWER_INFLATION_RATIO = 1.2;   // >120% of capasity
-    const TEMP_THRESHOLD = 85;           // °C
-    const VIBRATION_THRESHOLD = 5;       // unit
+  const CAPACITY_FACTOR_LOW = 0.2;   // 20%
+  const CAPACITY_FACTOR_HIGH = 1.1;  // 110% impossible
+  const TEMP_THRESHOLD = 85;
+  const VIBRATION_THRESHOLD = 5;
 
-    const records = await EnergyGenerationRecord.find()
-        .sort({ time: -1 });
+  const lastAnomaly = await Anomalies.findOne().sort({ detection_time: -1 });
+  const sinceTime = lastAnomaly?.detection_time ?? new Date(0);
 
-    for (const rec of records) {
-        const solarUnit = await SolarUnit.findById(rec.SolarUnitId);
-        if (!solarUnit) continue;
+  const records = await EnergyGenerationRecord.find({
+    time: { $gt: sinceTime }
+  });
 
-        const anomalies: any[] = [];
+  if (!records.length) {
+    console.log("No new energy records to analyze");
+    return;
+  }
 
-        const expectedEnergy =
-        solarUnit.capasity * (rec.intervalHours || 1);
+  const solarUnits = await SolarUnit.find();
+  const solarMap = new Map(
+    solarUnits.map(s => [String(s._id), s])
+  );
 
-        if (rec.energyGenerated < expectedEnergy * POWER_DEVIATION_RATIO) {
-        anomalies.push({
-            solarUnitId: rec.SolarUnitId,
-            anomalyType: "PowerOutput",
-            severity: "medium",
-            description: `Low power output detected. Expected ≈ ${expectedEnergy} kWh, got ${rec.energyGenerated} kWh`,
-            detection_time: rec.time,
-        });
-        }
+  const anomaliesToInsert: any[] = [];
 
-        if (rec.energyGenerated > expectedEnergy * POWER_INFLATION_RATIO) {
-        anomalies.push({
-            solarUnitId: rec.SolarUnitId,
-            anomalyType: "PowerOutput",
-            severity: "high",
-            description: `Energy exceeds capacity. Max ≈ ${expectedEnergy} kWh, got ${rec.energyGenerated} kWh`,
-            detection_time: rec.time,
-        });
-        }
+  for (const rec of records) {
+    const solarUnit = solarMap.get(String(rec.SolarUnitId));
+    if (!solarUnit) continue;
 
-        if (rec.temperature && rec.temperature > TEMP_THRESHOLD) {
-        anomalies.push({
-            solarUnitId: rec.SolarUnitId,
-            anomalyType: "Temperature",
-            severity: "high",
-            description: `High temperature detected: ${rec.temperature}°C`,
-            detection_time: rec.time,
-        });
-        }
+    const interval = rec.intervalHours || 1;
 
-        if (rec.vibration && rec.vibration > VIBRATION_THRESHOLD) {
-        anomalies.push({
-            solarUnitId: rec.SolarUnitId,
-            anomalyType: "Vibration",
-            severity: "medium",
-            description: `Excessive vibration detected: ${rec.vibration}`,
-            detection_time: rec.time,
-        });
-        }
+    // Theoretical maximum (kWh)
+    const theoreticalMax = solarUnit.capasity * interval;
 
-        if (rec.mechanicalIssue === true) {
-        anomalies.push({
-            solarUnitId: rec.SolarUnitId,
-            anomalyType: "Mechanical",
-            severity: "medium",
-            description: "Mechanical issue reported by sensor/system",
-            detection_time: rec.time,
-        });
-        }
+    // Capacity factor
+    const capacityFactor =
+      theoreticalMax > 0
+        ? rec.energyGenerated / theoreticalMax
+        : 0;
 
-        for (const anomaly of anomalies) {
-        const exists = await Anomalies.findOne({
-            solarUnitId: anomaly.solarUnitId,
-            anomalyType: anomaly.anomalyType,
-            detection_time: rec.time
-        });
-
-        if (!exists) {
-            await Anomalies.create(anomaly);
-        }
-        }
+    //LOW POWER
+    if (capacityFactor < CAPACITY_FACTOR_LOW) {
+      anomaliesToInsert.push({
+        solarUnitId: rec.SolarUnitId,
+        energyRecordId: rec._id,
+        anomalyType: "PowerOutputLow",
+        severity: "medium",
+        description: `Low production (${(capacityFactor * 100).toFixed(1)}%)`,
+        detection_time: rec.time
+      });
     }
 
-    console.log(" Anomaly detection completed");
+    //IMPOSSIBLE POWER
+    if (capacityFactor > CAPACITY_FACTOR_HIGH) {
+      anomaliesToInsert.push({
+        solarUnitId: rec.SolarUnitId,
+        energyRecordId: rec._id,
+        anomalyType: "PowerOutputHigh",
+        severity: "high",
+        description: `Production exceeds capacity (${(capacityFactor * 100).toFixed(1)}%)`,
+        detection_time: rec.time
+      });
+    }
+
+    //TEMPERATURE
+    if (rec.temperature && rec.temperature > TEMP_THRESHOLD) {
+      anomaliesToInsert.push({
+        solarUnitId: rec.SolarUnitId,
+        energyRecordId: rec._id,
+        anomalyType: "Temperature",
+        severity: rec.temperature > 95 ? "critical" : "high",
+        description: `High temperature: ${rec.temperature}°C`,
+        detection_time: rec.time
+      });
+    }
+
+    //VIBRATION
+    if (rec.vibration && rec.vibration > VIBRATION_THRESHOLD) {
+      anomaliesToInsert.push({
+        solarUnitId: rec.SolarUnitId,
+        energyRecordId: rec._id,
+        anomalyType: "Vibration",
+        severity: "medium",
+        description: `Excessive vibration: ${rec.vibration}`,
+        detection_time: rec.time
+      });
+    }
+
+    //MECHANICAL FLAG
+    if (rec.mechanicalIssue === true) {
+      anomaliesToInsert.push({
+        solarUnitId: rec.SolarUnitId,
+        energyRecordId: rec._id,
+        anomalyType: "Mechanical",
+        severity: "high",
+        description: "Mechanical issue reported by sensor",
+        detection_time: rec.time
+      });
+    }
+  }
+
+  if (anomaliesToInsert.length > 0) {
+    await Anomalies.insertMany(anomaliesToInsert, { ordered: false });
+  }
+
+  console.log(`✓ Detected ${anomaliesToInsert.length} anomalies`);
 }
