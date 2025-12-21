@@ -5,9 +5,9 @@ import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/clerk-react";
 const Navigation =()=>{
     const { user } = useUser();
     return (
-        <nav className={"px-12 py-6 flex items-center justify-between "}>
+        <nav className={"px-4 md:px-12 py-4 md:py-6 flex items-center justify-between "}>
             <Link to="/" className={"flex items-center gap-3"}>
-                <div className={"bg-[#7fff00] rounded-full w-10 h-10"}>
+                <div className={"bg-[#7fff00] rounded-full w-10 h-10 flex items-center justify-center"}>
                     <svg 
                         xmlns="http://www.w3.org/2000/svg" 
                         width="24" 
@@ -29,7 +29,7 @@ const Navigation =()=>{
             </Link>
             <div className={"flex  gap-5"}>
                 <SignedIn >
-                    <Link to="/dashboard" className={"flex items-center px-3 py-2"}>
+                    <Link to="/dashboard" className={"flex items-center px-3 py-2 gap-1 hover:bg-gray-100 rounded-md"}>
                         <svg 
                             xmlns="http://www.w3.org/2000/svg" 
                             width="24" 

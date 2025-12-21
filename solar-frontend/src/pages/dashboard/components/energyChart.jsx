@@ -23,10 +23,10 @@ const EnergyChart =()=>{
 
     if(isLoading){
         return(
-        <div className="w-full h-[300px] py-40 bg-white">
-            <div className="flex flex-col px-150 justify-center items-center">
+        <div className="w-full h-64 flex mb-4 items-center justify-center rounded-xl bg-white">
+            <div className="flex flex-col gap-2 items-center">
                 <Loader2 className="w-6 h-6 animate-spin"/>
-                <span className="font-semibold text-xl animation-pulse text-gray-700">Loading...</span>
+                <span className="font-semibold text-xl text-gray-700">Loading...</span>
             </div>
         </div>)
     }
@@ -50,10 +50,10 @@ const EnergyChart =()=>{
     }
 
     return(
-        <div className="bg-white rounded-xl px-5 mb-4 py-3 flex flex-col justify-center">
-            <div className="flex justify-between items-center">
-                <h1 className="text-lg font-bold">Power Usage Chart</h1>
-                <div className="px-10 flex items-center gap-4 text-sm">
+        <div className="bg-white rounded-xl px-4 mb-4 py-3 flex flex-col gap-3">
+            <div className="flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+                <h1 className="text-base sm:text-lg font-bold">Power Usage Chart</h1>
+                <div className=" flex items-center gap-2 text-sm">
                     <Funnel color='gray' className="w-4 h-4" />
                     <select onChange={handleSelection} defaultValue="week" className="p-2 border-2 border-blue-500 rounded-md">
                         <option value="day">Per Day</option>
@@ -62,7 +62,9 @@ const EnergyChart =()=>{
                     </select>
                 </div>
             </div>
-            <ChartAreaAxes data={filterData} className={'-px-3'}/>
+            <div className="w-full overflow-x-auto">
+                <ChartAreaAxes data={filterData} />
+            </div>
         </div>
     )
 }

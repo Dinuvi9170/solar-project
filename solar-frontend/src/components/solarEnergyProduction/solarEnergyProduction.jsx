@@ -31,8 +31,8 @@ const SolarEnergyProduction= ()=>{
     
     if(isLoading){
         return(
-        <div className="w-full h-[300px] py-20">
-            <div className="flex flex-col px-150 justify-center items-center">
+        <div className="w-full h-[300px] flex justify-center items-center">
+            <div className="flex flex-col justify-center items-center">
                 <Loader2 className="w-6 h-6 animate-spin"/>
                 <span className="font-semibold text-xl animation-pulse text-gray-700">Loading...</span>
             </div>
@@ -89,12 +89,12 @@ const SolarEnergyProduction= ()=>{
 
     return(
         isSignedIn?(
-        <section className={"px-18 py-6 font-[Inter]"}>
+        <section className={"px-4 md:px-18 md:py-6 font-[Inter]"}>
            <div className={"mb-2"}>
                 <h2 className="text-2xl font-bold mb-2">Solar Energy Production</h2>
-                <p className="text-gray-600">Daily energy output for the past 7 days</p>
+                <p className="text-gray-600 text-sm md:text-base">Daily energy output for the past 7 days</p>
            </div>
-           <div className="flex gap-3 ">
+           <div className="flex gap-2 md:gap-3 ">
                 {Tabs.map((tab)=>{
                     return(
                       <Tab
@@ -108,11 +108,11 @@ const SolarEnergyProduction= ()=>{
            </div>
            <div>
                 {filterData.length===0?(
-                    <div className="px-10 py-10">
+                    <div className="px-4 md:px-10 py-10">
                         <p>No anomalies available.</p>
                     </div>
                 ):(
-                    <div className="flex flex-col-7 gap-2">
+                    <div className="grid grid-cols-2 md:grid-cols-7 gap-2">
                         {filterData.map((day)=>{
                             return (
                                 <EnergyProductionCard
@@ -128,15 +128,15 @@ const SolarEnergyProduction= ()=>{
                 )}
            </div>
            
-           <div className="flex flex-col py-1 py-6 ml-1 -mr-2 ">
-                <div className=" h-18 w-full border border-blue-200 rounded-lg flex flex-col-2 justify-between bg-blue-50 text-blue-600">
+           <div className="flex flex-col py-6">
+                <div className=" md:h-18 w-full border border-blue-200 rounded-lg flex flex-col-2 justify-between bg-blue-50 text-blue-600">
                     <div className=" p-4">
-                        <span className="block text-xl font-bold">Weekly total</span>
-                        <span className="block text-xs">Total energy produced this week</span>
+                        <span className="block text-lg md:text-xl font-bold">Weekly total</span>
+                        <span className="block text-xs sm:text-sm">Total energy produced this week</span>
                     </div>
                     <div className=" p-4 justify-items-end">
-                        <span className="block text-xl font-bold">{total.toFixed(1)} kWh</span>
-                        <span className="block text-xs">Avg:{(total/7).toFixed(1)}kWh/day</span>
+                        <span className="block text-lg md:text-xl font-bold">{total.toFixed(1)} kWh</span>
+                        <span className="block text-xs sm:text-sm">Avg:{(total/7).toFixed(1)}kWh/day</span>
                     </div>
                 </div>
            </div>

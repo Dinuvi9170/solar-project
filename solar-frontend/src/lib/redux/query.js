@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-const BaseUrl='http://localhost:8000/api';
+const BaseUrl='http://192.168.8.193:8000/api';
 const WEATHERAPI= import.meta.env.VITE_WEATHER_API_KEY;
 export const api = createApi({
   reducerPath: 'api',

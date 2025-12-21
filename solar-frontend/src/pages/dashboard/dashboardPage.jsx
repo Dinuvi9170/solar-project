@@ -13,23 +13,19 @@ const DashboardPage =()=>{
 
     const {data,isLoading,isError,error}=useGetEnergyRecordsBysolarIdQuery(
         {id:solarunit?._id, groupBy:"date"},{ skip: !solarunit?._id });
-    if(isLoading){
-        return(
-        <div className="w-full h-screen py-40 bg-gray-100">
-            <div className="flex flex-col px-150 justify-center items-center">
-                <Loader2 className="w-6 h-6 animate-spin"/>
-                <span className="font-semibold text-xl animation-pulse text-gray-700">Loading...</span>
-            </div>
-        </div>)
-    }
     if(!solarunit?._id){
         return (
-        <div className="w-full bg-gray-100 flex h-screen">
-            <div className="w-full h-[300px] flex justify-center items-center">
-                <span className="text-xl font-semibold text-blue-700">No solar unit found for this user.</span>
-            </div>     
-        </div>
+            <div className="w-full bg-gray-100  justify-center flex h-screen">
+                <span className="text-xl font-semibold text-blue-700">No solar unit found for this user.</span> 
+            </div>
         )
+    }
+    if(isLoading){
+        return(
+        <div className="w-full h-screen flex flex-col justify-center items-center bg-gray-100">
+                <Loader2 className="w-6 h-6 animate-spin"/>
+                <span className="font-semibold mt-2 text-xl text-gray-700">Loading...</span>
+        </div>)
     }
     
     if(!data || isError){
@@ -48,10 +44,10 @@ const DashboardPage =()=>{
         return day.date>=sevendayago
     })
     return(
-        <div className="w-full h-screen bg-gray-100 overflow-y-scroll">
-            <div className="px-8 py-2 flex flex-col">
-                <div className="flex w-full justify-between">
-                    <div className="flex flex-col">
+        <div className="w-full min-h-screen bg-gray-100 overflow-y-scroll">
+            <div className="px-4 md:px-8 py-2 flex flex-col gap-4">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                    <div >
                         <h1 className="text-2xl font-bold">{user?.firstName}'s Home</h1>
                         <span className="text-base text-gray-500">Welcome back to your Solar Energy dashboard</span>
                     </div>
@@ -60,9 +56,9 @@ const DashboardPage =()=>{
                     </div>
                 </div>
                 <WeatherData/>
-                <div className="w-full h-[150px] bg-white rounded-lg px-5 py-3 mb-4">
+                <div className="w-full h-full bg-white rounded-lg px-5 py-3 mb-4">
                     <h1 className="text-lg font-bold">Last 7 Days Energy Consumption</h1>
-                    <div className="grid grid-cols-7 gap-2 mt-4 justify-center items-center">
+                    <div className="grid grid-cols-2  md:grid-cols-7 gap-2 mt-4 justify-center items-center">
                         {weekData.map((el)=>(
                             <EnergyConsumptionCard 
                                 key={el.date}

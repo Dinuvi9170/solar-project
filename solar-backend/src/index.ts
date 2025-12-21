@@ -18,7 +18,7 @@ import { handleStripeWebhook } from './application/stripe/stripe.webhooks';
 
 const server= express();
 
-server.use(cors({origin:"http://localhost:5173"}));
+server.use(cors({origin:["http://192.168.8.193:5173","http://localhost:5173","http://192.168.8.193:8000"]}));
 
 server.use(LoggerMiddleware);
 
