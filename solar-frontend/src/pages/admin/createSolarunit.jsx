@@ -51,7 +51,7 @@ const CreateSolarUnit = () => {
 
   return (
     <div className="min-h-screen w-full bg-gray-100 flex flex-col items-center p-6">
-      <div className="flex mb-4 items-center -ml-80">
+      <div className="flex mb-4 items-center md:-ml-80">
         <div className="flex pr-2">
           <Button
             variant="outline"
@@ -63,7 +63,7 @@ const CreateSolarUnit = () => {
           </Button>
         </div>
 
-        <h1 className="text-4xl font-bold text-gray-800 tracking-tight">
+        <h1 className="text-2xl md:text-4xl font-bold text-gray-800 tracking-tight">
           Create Solar Unit
         </h1>
       </div>

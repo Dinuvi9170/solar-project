@@ -27,7 +27,7 @@ const Navigation =()=>{
                 </div>
                 <span className={"text-lg font-semibold font-[Inter]"}>Aelora</span>
             </Link>
-            <div className={"flex  gap-5"}>
+            <div className={"flex gap-0  md:gap-5"}>
                 <SignedIn >
                     <Link to="/dashboard" className={"flex items-center px-3 py-2 gap-1 hover:bg-gray-100 rounded-md"}>
                         <svg 
@@ -51,7 +51,7 @@ const Navigation =()=>{
                     {user?.publicMetadata?.role === "admin" && (
                         <Link
                         to="/admin"
-                        className="flex items-center px-3 py-2 gap-1 hover:text-red-600 font-semibold"
+                        className="flex items-center md:px-3 py-2 md:gap-1 hover:text-red-600 font-semibold"
                         >
                         Admin
                         </Link>

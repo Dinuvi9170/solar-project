@@ -51,7 +51,7 @@ const EnergyChart =()=>{
 
     return(
         <div className="bg-white rounded-xl px-4 mb-4 py-3 flex flex-col gap-3">
-            <div className="flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+            <div className="flex justify-between p-2 md:p-4 items-center gap-3">
                 <h1 className="text-base sm:text-lg font-bold">Power Usage Chart</h1>
                 <div className=" flex items-center gap-2 text-sm">
                     <Funnel color='gray' className="w-4 h-4" />

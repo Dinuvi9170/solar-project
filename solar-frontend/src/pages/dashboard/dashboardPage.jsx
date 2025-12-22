@@ -1,4 +1,4 @@
-import { Loader2 } from "lucide-react";
+import { CheckCircle, Loader2 } from "lucide-react";
 import EnergyConsumptionCard from "./components/energyConsumptionCard";
 import { useGetEnergyRecordsBysolarIdQuery, useGetSolarUnitforUserQuery } from "@/lib/redux/query";
 import { format, subDays } from "date-fns";
@@ -15,7 +15,7 @@ const DashboardPage =()=>{
         {id:solarunit?._id, groupBy:"date"},{ skip: !solarunit?._id });
     if(!solarunit?._id){
         return (
-            <div className="w-full bg-gray-100  justify-center flex h-screen">
+            <div className="w-full bg-gray-100 mt-20 justify-center flex h-screen">
                 <span className="text-xl font-semibold text-blue-700">No solar unit found for this user.</span> 
             </div>
         )
@@ -51,8 +51,9 @@ const DashboardPage =()=>{
                         <h1 className="text-2xl font-bold">{user?.firstName}'s Home</h1>
                         <span className="text-base text-gray-500">Welcome back to your Solar Energy dashboard</span>
                     </div>
-                    <div className="flex">
-                        <span>Status</span>
+                    <div className="w-40 p-2 rounded-lg flex gap-2 items-center bg-green-100">
+                        <CheckCircle color="green"/>
+                        <span className="font-bold text-green-700">Status: {solarunit.status}</span>
                     </div>
                 </div>
                 <WeatherData/>

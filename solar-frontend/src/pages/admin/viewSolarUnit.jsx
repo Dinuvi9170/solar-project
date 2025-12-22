@@ -38,7 +38,7 @@ const SolarUnitDetail = () => {
     const formattedDate = new Date(unit.installationDate).toLocaleDateString();
 
     return (
-        <div className="p-8 bg-gray-100 min-h-screen flex justify-center overflow-y-auto">
+        <div className="p-4 md:p-8 bg-gray-100 min-h-screen flex justify-center overflow-y-auto">
             <div className="w-full max-w-6xl space-y-8">
                 <div className="flex items-center mb-4">
                     <div className="flex pr-2">
@@ -52,7 +52,7 @@ const SolarUnitDetail = () => {
                         </Button>
                         </div>
 
-                        <h1 className="text-4xl font-bold text-gray-800 tracking-tight">
+                        <h1 className="text-2xl md:text-4xl font-bold text-gray-800 tracking-tight">
                         Solar Unit Overview
                         </h1>
                     </div>

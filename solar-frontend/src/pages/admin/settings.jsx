@@ -29,11 +29,10 @@ const AdminSettings = () => {
   };
 
   return (
-    <div className="p-8 font-[Inter]">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">Admin Settings</h1>
+    <div className="p-4 md:p-8 font-[Inter]">
+      <h1 className="text-2xl md:text-4xl font-bold mb-6 text-gray-800">Admin Settings</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Profile Settings */}
         <Card className="shadow-md border border-gray-200">
           <CardHeader className="flex items-center gap-2">
             <User className="w-5 h-5 text-blue-600" />
@@ -71,7 +70,6 @@ const AdminSettings = () => {
           </CardContent>
         </Card>
 
-        {/* Appearance Settings */}
         <Card className="shadow-md border border-gray-200">
           <CardHeader className="flex items-center gap-2">
             <Palette className="w-5 h-5 text-purple-600" />
@@ -115,7 +113,6 @@ const AdminSettings = () => {
           </CardContent>
         </Card>
 
-        {/* Security Settings */}
         <Card className="shadow-md border border-gray-200 md:col-span-2">
           <CardHeader className="flex items-center gap-2">
             <Shield className="w-5 h-5 text-red-600" />
@@ -165,7 +162,6 @@ const AdminSettings = () => {
           </CardContent>
         </Card>
 
-        {/* Notifications Settings */}
         <Card className="shadow-md border border-gray-200 md:col-span-2">
           <CardHeader className="flex items-center gap-2">
             <Bell className="w-5 h-5 text-yellow-500" />

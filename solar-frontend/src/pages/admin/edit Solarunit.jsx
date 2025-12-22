@@ -69,8 +69,8 @@ const EditSolarUnit = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gray-100 flex flex-col items-center p-6">
-      <div className="flex mb-4 items-center -ml-80">
+    <div className="min-h-screen w-full bg-gray-100 flex flex-col items-center p-4 md:p-6">
+      <div className="flex mb-4 -ml-30  items-center md:-ml-88">
         <div className="flex pr-2">
           <Button
             variant="outline"
@@ -82,7 +82,7 @@ const EditSolarUnit = () => {
           </Button>
         </div>
 
-        <h1 className="text-4xl font-bold text-gray-800 tracking-tight">
+        <h1 className="text-2xl md:text-4xl font-bold text-gray-800 tracking-tight">
           Edit Solar Unit
         </h1>
       </div>

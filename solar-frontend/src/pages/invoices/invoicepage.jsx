@@ -22,7 +22,7 @@ const InvoicesPage = () => {
     return (
       <div className="w-full h-screen py-40 bg-gray-100 flex justify-center items-center flex-col">
         <Loader2 color="gray" className="w-8 h-8 animate-spin text-teal-500" />
-        <span className="mt-4 font-semibold text-lg text-gray-700 animate-pulse">Loading...</span>
+        <span className="mt-4 font-semibold text-lg text-gray-700 ">Loading...</span>
       </div>
     );
   }
@@ -36,14 +36,13 @@ const InvoicesPage = () => {
   }
 
   return (
-    <div className="p-4 md:p-6 max-w-7xl mx-auto">
-      {/* Header */}
+    <div className="p-4 min-h-screen md:p-6 max-w-7xl mx-auto">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
         <h1 className="text-3xl font-bold text-gray-800">Invoices</h1>
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="border rounded-lg px-4 py-2 text-gray-700 shadow-sm focus:ring-2 focus:ring-teal-400"
+          className="border rounded-lg px-4 py-2 text-gray-700 shadow-sm focus:ring-2 focus:ring-blue-400"
         >
           {STATUS_FILTERS.map((status) => (
             <option key={status} value={status}>
@@ -54,9 +53,7 @@ const InvoicesPage = () => {
       </div>
 
       <div className="flex flex-col md:flex-row gap-6">
-        {/* Left: Invoice Table / Card View */}
         <div className="md:w-1/2">
-          {/* Desktop Table */}
           <div className="hidden md:block overflow-x-auto bg-white rounded-xl shadow p-4">
             <table className="w-full text-left text-sm">
               <thead className="bg-gray-100 rounded-t-lg">
@@ -71,7 +68,7 @@ const InvoicesPage = () => {
               <tbody>
                 {filteredInvoices.length === 0 && (
                   <tr>
-                    <td colSpan="5" className="p-4 text-center text-gray-500">
+                    <td colSpan="5" className="p-4 text-center text-blue-500">
                       No invoices found
                     </td>
                   </tr>
@@ -111,10 +108,9 @@ const InvoicesPage = () => {
             </table>
           </div>
 
-          {/* Mobile Card View */}
           <div className="md:hidden flex flex-col gap-4">
             {filteredInvoices.length === 0 && (
-              <div className="p-4 text-center text-gray-500">No invoices found</div>
+              <div className="p-4 text-center text-blue-500">No invoices found</div>
             )}
             {filteredInvoices.map((invoice) => (
               <div
@@ -159,7 +155,6 @@ const InvoicesPage = () => {
           </div>
         </div>
 
-        {/* Right: Selected Invoice Detail */}
         {selectedInvoice && (
           <div className="md:w-1/2 bg-white rounded-xl shadow p-6">
             <h2 className="text-2xl font-semibold mb-4">Invoice Details</h2>

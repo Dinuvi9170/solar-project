@@ -10,10 +10,10 @@ const ResolvedStatus =()=>{
     
     if (isLoading) {
         return (
-            <div className="w-full h-[300px] py-40 bg-white">
-                <div className="flex flex-col px-150 justify-center items-center">
+            <div className="w-full h-[200px] bg-white flex items-center justify-center">
+                <div className="flex flex-col justify-center items-center">
                     <Loader2 className="w-6 h-6 animate-spin"/>
-                    <span className="font-semibold text-xl animation-pulse text-gray-700">Loading...</span>
+                    <span className="font-semibold text-xl text-gray-700">Loading...</span>
                 </div>
             </div>
         )
@@ -34,7 +34,7 @@ const ResolvedStatus =()=>{
     
     return(
         <div className="w-full py-4">
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid md:grid-cols-3 gap-4">
                 {resolvedStatus.map((status,index)=>{
                     const Icon = items[status.status];
                     return(
