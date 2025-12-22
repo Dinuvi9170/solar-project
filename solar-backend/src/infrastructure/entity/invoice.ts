@@ -2,15 +2,19 @@ import mongoose from "mongoose";
 
 const InvoiceSchema = new mongoose.Schema(
     {
-        solarUnitId: { 
+        SolarUnitId: { 
             type: mongoose.Schema.Types.ObjectId, 
-            ref: "SolarUnit", 
+            ref: "solarunits", 
             required: true 
         },
         userId: { 
             type: mongoose.Schema.Types.ObjectId, 
             ref: "users",
             required: true
+        },
+        stripeInvoiceId: {
+            type: String,
+            required: true,
         },
         billingPeriodStart: { 
             type: Date, 

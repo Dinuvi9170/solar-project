@@ -72,6 +72,9 @@ export const api = createApi({
     getInvoiceById: build.query({
       query: ({invoiceId})=>`/invoices/${invoiceId}`,
     }),
+    getAllInvoices:build.query({
+      query:()=>"/invoices/admin/all"
+    }),
     createInvoice: build.mutation({
       query: ()=>({
         url: "/invoices/generate",
@@ -91,6 +94,9 @@ export const api = createApi({
         url: "/payments/session-status",
         params: { session_id: sessionId },
       })
+    }),
+    getAmountByStripeID: build.query({
+      query: ({stripeInvoiceId})=> `/invoices/stripe/${stripeInvoiceId}`,
     })
   }),
 })
@@ -110,5 +116,8 @@ export const { useGetEnergyRecordsBysolarIdQuery,
   useGetInvoiceByIdQuery,
   useCreateInvoiceMutation,
   useCreatePaymentSessionMutation,
-  useGetSessionStatusQuery
+  useGetSessionStatusQuery,
+  useGetAmountByStripeIDQuery,
+  useGetAllInvoicesQuery,
+  useLazyGetAmountByStripeIDQuery
  } = api;

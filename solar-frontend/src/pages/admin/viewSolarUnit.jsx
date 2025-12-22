@@ -16,11 +16,11 @@ const SolarUnitDetail = () => {
 
     if (isLoading) {
         return (
-        <div className="w-full h-screen flex justify-center items-center bg-gray-50">
+        <div className="w-full h-screen flex justify-center items-center bg-gray-100">
             <div className="flex flex-col items-center gap-3">
             <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-            <span className="font-semibold text-lg text-gray-700 animate-pulse">
-                Loading Solar Unit Details...
+            <span className="font-semibold text-lg text-gray-700">
+                Loading...
             </span>
             </div>
         </div>

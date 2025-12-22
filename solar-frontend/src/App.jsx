@@ -13,11 +13,12 @@ import AdminSolarUnits from "./pages/admin/adminpage";
 import AdminLayout from "./layout/adminDashboard";
 import AdminSettings from "./pages/admin/settings";
 import SolarUnitDetail from "./pages/admin/viewSolarUnit";
-import EditSolarUnit from "./pages/admin/edit Solarunit";
+import EditSolarUnit from "./pages/admin/editSolarunit";
 import CreateSolarUnit from "./pages/admin/createSolarunit";
 import InvoicesPage from "./pages/invoices/invoicepage";
 import PaymentPage from "./pages/invoices/paymentpage";
 import PaymentCompletePage from "./pages/invoices/completepage";
+import AdminInvoices from "./pages/admin/admininvoices";
 
 function App() {
   return (
@@ -40,7 +41,8 @@ function App() {
             <Route element={<Authorizedlayout/>}>
               <Route path='/admin' element={ <AdminLayout/> } >
                 <Route index element={<AdminSolarUnits />} /> 
-                <Route path="solarunits" element={ <AdminSolarUnits/> } /> 
+                <Route path="solarunits" element={ <AdminSolarUnits/> } />
+                <Route path="invoices" element={ <AdminInvoices/> } /> 
                 <Route path="settings" element={ <AdminSettings/> } /> 
                 <Route path="solarunits/:id" element={ <SolarUnitDetail/> } />
                 <Route path="solarunits/editsolarunit/:id" element={ <EditSolarUnit/> } />

@@ -1,8 +1,9 @@
-import { Zap, Wind, Settings } from "lucide-react"
+import { Zap, Wind, Settings, ChevronUp, Receipt } from "lucide-react"
 
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -11,6 +12,8 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { Link, useLocation } from "react-router-dom"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { useUser } from "@clerk/clerk-react"
 
 // Menu items.
 const items = [
@@ -19,6 +22,12 @@ const items = [
     url: "/admin/solarunits",
     icon: Zap,
     name:"solarunits"
+  },
+  {
+    title: "Invoices",
+    url: "/admin/invoices",
+    icon: Receipt,
+    name:"invoices"
   },
   {
     title: "Settings",
@@ -32,6 +41,7 @@ const items = [
 export function AdminSidebar() {
   const location =useLocation()
   const path= location.pathname;
+  const {user}=useUser();
 
   const Setclass=(url)=>{
       if(path===url){
@@ -68,6 +78,31 @@ export function AdminSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <SidebarMenuButton className="flex items-center justify-between">
+                    <span>{user.firstName}  {user.lastName}</span>
+                    <ChevronUp className="ml-auto" />
+                  </SidebarMenuButton>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  side="top"
+                  className="w-[--radix-popper-anchor-width]"
+                >
+                  <DropdownMenuItem>
+                    <span>Account</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => clerk.signOut()}>
+                    <span>Sign out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarFooter>
     </Sidebar>
   )
 }

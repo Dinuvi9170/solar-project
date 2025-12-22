@@ -23,7 +23,7 @@ const AdminSolarUnits = () => {
     
     if(!units){
         return (
-            <div className="w-full bg-gray-100 flex h-full">
+            <div className="w-full bg-gray-100 flex min-h-screen">
                 <div className="w-full h-[300px] flex justify-center items-center">
                     <span className="text-xl font-semibold text-blue-700">No solar unit found.</span>
                 </div>     
@@ -44,7 +44,7 @@ const AdminSolarUnits = () => {
   return (
     <div className="p-4 md:p-6 w-full h-full bg-gray-100">
       <div className="flex flex-col md:flex-row items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Solar Units Management</h1>
+        <h1 className="text-2xl md:text-4xl font-bold text-gray-800">Solar Units Management</h1>
         <div className="flex flex-col md:flex-row gap-2 mt-4 md:mt-0">
           <Input
             placeholder="Search by serial number..."

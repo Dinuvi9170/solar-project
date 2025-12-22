@@ -29,7 +29,7 @@ const AdminSettings = () => {
   };
 
   return (
-    <div className="p-4 md:p-8 font-[Inter]">
+    <div className="p-4 md:p-8 min-h-screen font-[Inter]">
       <h1 className="text-2xl md:text-4xl font-bold mb-6 text-gray-800">Admin Settings</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

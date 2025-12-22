@@ -23,6 +23,11 @@ const UserSchema= new mongoose.Schema({
       required: true,
       unique: true,
     },
+    stripeCustomerId: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
     createdAt: {
       type: Date,
       default: Date.now,

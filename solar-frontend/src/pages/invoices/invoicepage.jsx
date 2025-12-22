@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useGetInvoiceQuery } from "@/lib/redux/query";
+import { useGetAmountByStripeIDQuery, useGetInvoiceQuery } from "@/lib/redux/query";
 import { Link } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 
@@ -17,7 +17,10 @@ const InvoicesPage = () => {
       : invoices.filter((inv) => inv.paymentStatus === statusFilter);
 
   const selectedInvoice = invoices.find((inv) => inv._id === selectedInvoiceId);
+  const stripeInvoiceId=selectedInvoice?.stripeInvoiceId;
 
+  const { data: stripeDetails, isLoading: loadingStripe } = useGetAmountByStripeIDQuery({ stripeInvoiceId },{ skip: !stripeInvoiceId });
+  console.log(stripeDetails)
   if (isLoading) {
     return (
       <div className="w-full h-screen py-40 bg-gray-100 flex justify-center items-center flex-col">
@@ -157,22 +160,10 @@ const InvoicesPage = () => {
 
         {selectedInvoice && (
           <div className="md:w-1/2 bg-white rounded-xl shadow p-6">
-            <h2 className="text-2xl font-semibold mb-4">Invoice Details</h2>
-            <p className="text-gray-600 mb-2">
-              <strong>Invoice ID:</strong> {selectedInvoice._id}
-            </p>
-            <p className="text-gray-600 mb-2">
-              <strong>Billing Period:</strong>{" "}
-              {new Date(selectedInvoice.billingPeriodStart).toLocaleDateString()} →{" "}
-              {new Date(selectedInvoice.billingPeriodEnd).toLocaleDateString()}
-            </p>
-            <p className="text-gray-600 mb-2">
-              <strong>Energy Generated:</strong> {selectedInvoice.totalEnergyGenerated} kWh
-            </p>
-            <p className="text-gray-600 mb-2">
-              <strong>Status:</strong>{" "}
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl font-bold text-gray-800">Invoice Details</h2>
               <span
-                className={`px-2 py-1 rounded-full text-xs font-medium ${
+                className={`px-3 py-1 rounded-full text-xs font-semibold ${
                   selectedInvoice.paymentStatus === "PAID"
                     ? "bg-green-100 text-green-700"
                     : selectedInvoice.paymentStatus === "PENDING"
@@ -182,20 +173,68 @@ const InvoicesPage = () => {
               >
                 {selectedInvoice.paymentStatus}
               </span>
-            </p>
+            </div>
+            <div className="space-y-3 text-sm">
+              <div>
+                <p className="text-gray-500">Invoice ID</p>
+                <p className="font-medium text-gray-800 break-all">
+                  {selectedInvoice._id}
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-gray-500">Billing Start</p>
+                  <p className="font-medium text-gray-800">
+                    {new Date(
+                      selectedInvoice.billingPeriodStart
+                    ).toLocaleDateString()}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-gray-500">Billing End</p>
+                  <p className="font-medium text-gray-800">
+                    {new Date(
+                      selectedInvoice.billingPeriodEnd
+                    ).toLocaleDateString()}
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <p className="text-gray-500">Energy Generated</p>
+                <p className="font-medium text-gray-800">
+                  {selectedInvoice.totalEnergyGenerated} kWh
+                </p>
+              </div>
+            </div>
+
+            <div className="border-t pt-4">
+              <p className="text-sm text-gray-500">Total Amount</p>
+              <p className="text-3xl font-bold text-blue-600">
+                {loadingStripe ? (
+                  <span className="text-base text-gray-400">Loading...</span>
+                ) : stripeDetails?.amount ? (
+                  `$${(stripeDetails.amount / 100).toFixed(2)}`
+                ) : (
+                  "-"
+                )}
+              </p>
+            </div>
+
             {selectedInvoice.paymentStatus === "PENDING" && (
-              <div className="mt-4 flex flex-col md:flex-row gap-3">
+              <div className="flex flex-col sm:flex-row gap-3">
                 <Link
                   to={`/dashboard/invoices/${selectedInvoice._id}/pay`}
-                  className="flex-1 text-center bg-blue-500 text-white font-medium py-2 rounded-lg hover:bg-blue-600 transition-colors"
+                  className="flex-1 text-center bg-blue-500 text-white font-semibold py-2 rounded-xl hover:bg-blue-600 transition"
                 >
                   Pay Now
                 </Link>
                 <button
                   onClick={() => setSelectedInvoiceId(null)}
-                  className="flex-1 text-center bg-red-200 text-red-700 font-medium py-2 rounded-lg hover:bg-red-300 transition-colors"
+                  className="flex-1 text-center bg-gray-100 text-gray-700 font-semibold py-2 rounded-xl hover:bg-gray-200 transition"
                 >
-                  Cancel
+                  Close
                 </button>
               </div>
             )}
