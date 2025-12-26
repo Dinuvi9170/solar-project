@@ -1,4 +1,4 @@
-import { LayoutDashboard,TriangleAlert, Wind, ChevronUp, Receipt } from "lucide-react"
+import { LayoutDashboard,TriangleAlert, Wind, ChevronUp, Receipt, Zap } from "lucide-react"
 
 import {
   Sidebar,
@@ -67,9 +67,9 @@ export function AppSidebar() {
           <SidebarGroupLabel>
             <Link to="/" className="flex gap-2 items-center">
                 <div className="flex justify-center items-center w-8 h-8 rounded-full bg-[#7fff00]">
-                    <Wind color="black" className="w-5 h-5"/>
+                    <Zap color="black" className="w-5 h-5"/>
                 </div>
-                <span className="text-xl font-bold text-black">Aelora</span>
+                <span className="text-xl font-bold text-black">Solarix</span>
             </Link>
           </SidebarGroupLabel>
           <SidebarGroupContent className="py-5 flex">
