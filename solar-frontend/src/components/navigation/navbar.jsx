@@ -15,17 +15,15 @@ const Navigation =()=>{
                         viewBox="0 0 24 24" 
                         fill="none" 
                         stroke="currentColor" 
-                        strokeWidth="2" 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round" 
-                        className={"px-[2px] mt-[6px] mr-[6px] mb-[6px] ml-[7px] items-center"}
+                        stroke-width="2" 
+                        stroke-linecap="round" 
+                        stroke-linejoin="round" 
+                        class="lucide lucide-zap-icon lucide-zap"
                     >
-                        <path d="M12.8 19.6A2 2 0 1 0 14 16H2"/>
-                        <path d="M17.5 8a2.5 2.5 0 1 1 2 4H2"/>
-                        <path d="M9.8 4.4A2 2 0 1 1 11 8H2"/>
+                    <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
                     </svg>
                 </div>
-                <span className={"text-lg font-semibold font-[Inter]"}>Aelora</span>
+                <span className={"text-lg font-semibold font-[Inter]"}>Solarix</span>
             </Link>
             <div className={"flex gap-0  md:gap-5"}>
                 <SignedIn >

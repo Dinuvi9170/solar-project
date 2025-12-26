@@ -1,4 +1,4 @@
-import {Wind,Sailboat,Triangle,Shield} from 'lucide-react';
+import {Sailboat,Triangle,Shield, Zap} from 'lucide-react';
 
 const Herosection =()=>{
     return(
@@ -6,7 +6,7 @@ const Herosection =()=>{
             <nav className={"flex flex-wrap gap-4 md:0 justify-between"}>
                 <div className={"gap-3 items-center flex"}>
                     <div className={"w-9 h-9 rounded-full bg-[#7fff00] flex items-center justify-center"}>
-                        <Wind className="h-5 w-5 " />
+                        <Zap className="h-5 w-5 " />
                     </div>
                     <span className={"text-sm font-normal font-[Inter]"}>Solar Energy</span>
                 </div>

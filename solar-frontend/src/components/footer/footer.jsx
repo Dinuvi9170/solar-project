@@ -8,7 +8,7 @@ const Footer = ()=>{
                         <div className='p-2 bg-lime-600 rounded-full w-10 h-10'>
                             <Zap className='w-6 h-6 mb-1 mr-2 '/>
                         </div>
-                        <div className='text-xl font-bold text-blue-600'>Smart Energy</div>
+                        <div className='text-xl font-bold text-blue-600'>Solarix Energy</div>
                     </div>
                     <span className='block'>Revolutionizing wind farm management</span>
                     <span className='block'> through advanced digital twin technology </span>
@@ -63,7 +63,7 @@ const Footer = ()=>{
                         <li className='flex max-w-xs'>
                             <Phone color='yellow' className='mr-2 w-5 h-5' />+45 33 22 11 00
                         </li>
-                        <li className='flex max-w-xs'><Mail color='yellow' className='mr-2 w-5 h-5' />contact@smartenergy.com</li>
+                        <li className='flex max-w-xs'><Mail color='yellow' className='mr-2 w-5 h-5' />contact@Solarixenergy.com</li>
                     </ul>
                     <div className='mt-5 flex flex-col'>
                         <span className='font-bold py-2 mb-2'>Stay Updated</span>
@@ -83,7 +83,7 @@ const Footer = ()=>{
                     </div>
                     <div className='flex justify-center items-center gap-1'>
                         <LucideCopyright className='w-4 h-4'/> 
-                        <span>2025 Smart Energy. All rights reserved.</span>
+                        <span>2025 Solarix Energy. All rights reserved.</span>
                     </div>
             </div>
         </>

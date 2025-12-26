@@ -48,7 +48,7 @@ const HomeContent= ()=>{
             <div className="flex flex-col md:flex-row items-left mt-10 gap-10 md:gap-8">  
                 <div className='relative w-full md:w-8/4 font-bold text-white '>
                     <img src={"/images/white-turbine.jpg"} className="h-[500px] object-cover md:h-[700px] md:w-[600px] rounded-3xl border border-blue-100"/>
-                    <div className='absolute w-18 h-10 px-3 py-2 border border-blue-600 bg-blue-600 rounded-lg bottom-6 left-6'>Aelora</div>
+                    <div className='absolute w-18 h-10 px-3 py-2 border border-blue-600 bg-blue-600 rounded-lg bottom-6 left-6'>Solarix</div>
                 </div>          
                 <div className="px-10 border border-blue-600 bg-blue-400 rounded-3xl">
                     <div className='mt-10 flex gap-1 w-30  border border-lime-600 h-10 bg-lime-600 rounded-lg'>                        
