@@ -214,8 +214,8 @@ const InvoicesPage = () => {
               <p className="text-3xl font-bold text-blue-600">
                 {loadingStripe ? (
                   <span className="text-base text-gray-400">Loading...</span>
-                ) : stripeDetails?.amount ? (
-                  `$${(stripeDetails.amount / 100).toFixed(2)}`
+                ) : stripeDetails?.total ? (
+                  `$${(stripeDetails.total / 100).toFixed(2)}`
                 ) : (
                   "-"
                 )}

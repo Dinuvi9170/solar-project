@@ -97,6 +97,9 @@ export const api = createApi({
     }),
     getAmountByStripeID: build.query({
       query: ({stripeInvoiceId})=> `/invoices/stripe/${stripeInvoiceId}`,
+    }),
+    getCapasityFactor: build.query({
+      query: ({id})=>`/energyRecords/solar-unit/${id}/capacityfactor`
     })
   }),
 })
@@ -119,5 +122,6 @@ export const { useGetEnergyRecordsBysolarIdQuery,
   useGetSessionStatusQuery,
   useGetAmountByStripeIDQuery,
   useGetAllInvoicesQuery,
-  useLazyGetAmountByStripeIDQuery
+  useLazyGetAmountByStripeIDQuery,
+  useGetCapasityFactorQuery
  } = api;

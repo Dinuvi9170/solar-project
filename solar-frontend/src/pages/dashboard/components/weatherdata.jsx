@@ -1,6 +1,7 @@
 import { useGetWeatherByCityQuery } from "@/lib/redux/query";
 import { Loader2, Thermometer, Wind, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
+import Capacityfactor from "./capacityfactor";
 
 const WeatherData=()=>{
     const [coords,SetCoords] = useState(null)
@@ -68,25 +69,15 @@ const WeatherData=()=>{
                     </div>
                 </div>
             </div>
-            <div className="rounded-xl bg-blue-400 p-4 sm:p-6 flex flex-col gap-4">
+            <div className="rounded-xl bg-blue-300 flex flex-col gap-4">
                 <div className="px-6 py-5 flex flex-col">
                     <div className="flex text-white items-center gap-2 font-bold">
-                        <Zap className="w-4 h-4"/>
-                        <span className="text-lg ">Real-Time Power</span>
+                        <Zap className="w-4 h-4" color="green"/>
+                        <span className="text-lg text-black">Capacity Factor</span>
                     </div>
-                    <div className="flex justify-between text-sm font-bold text-white">
-                        <div className="flex flex-col gap-2">
-                            <span>Avg Wind Speed(10min)</span>
-                            <span>Avg Power(10min)</span>
-                            <span>Peak Power(10min)</span>
-                            <span>Total Energy</span>
-                        </div>
-                        <div className="flex flex-col items-end gap-2">
-                            <span>7.8 m/s</span>
-                            <span>280.4 kW</span>
-                            <span>332.1 kW</span>
-                            <span>4.0 GWh</span>
-                        </div>
+                    <span className="text-md text-gray-900">Efficiency of the solar unit over the past week</span>
+                    <div className="flex justify-center text-sm text-white">
+                        <Capacityfactor/>
                     </div>
                 </div>
             </div>

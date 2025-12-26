@@ -5,7 +5,7 @@ import TypesData from "./components/typesChart";
 
 const Anomaly =()=>{
     return(
-        <div className=" w-full min-h-screen bg-gray-100 overflow-y-scroll">
+        <div className=" w-full min-h-screen bg-gray-100 overflow-y-auto">
             <div className="px-4 md:px-8 py-2 flex flex-col">
                 <div className="flex flex-col">
                     <h1 className="text-2xl font-bold">Anomaly Detection</h1>

@@ -48,7 +48,7 @@ const SolarEnergyProduction= ()=>{
         ? data.map((el) => {
             const date = new Date(el._id.date);
 
-            const capacityKW = solarunit.capasity/10; 
+            const capacityKW = solarunit.capasity; 
             const theoreticalMax = capacityKW * 12; 
 
             const capacityFactor =

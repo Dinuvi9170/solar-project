@@ -3,6 +3,7 @@ import { ValidationError } from "../domain/errors/errors";
 import {EnergyGenerationRecord} from "../infrastructure/entity/energyGenerationRecords";
 import {Request,Response,NextFunction} from 'express';
 import mongoose from 'mongoose';
+import { SolarUnit } from "../infrastructure/entity/solar-units";
 
 export const getEnergyRecordsBySolarid= async (req:Request,res:Response,next:NextFunction)=>{
     try{
@@ -83,3 +84,58 @@ export const getEnergyRecordsBySolarid= async (req:Request,res:Response,next:Nex
     }
    
 };
+
+export const getCapacityFactor = async (req:Request,res:Response,next:NextFunction)=>{
+    try{
+        const {id}= req.params;
+
+        const lastDate= new Date();
+        const startDate= new Date();
+
+        startDate.setDate(lastDate.getDate()-7);
+
+        const solarUnit = await SolarUnit.findById(id);
+
+        if (!solarUnit) {
+        return res.status(404).json({ message: "Solar unit not found" });
+        }
+
+        const records= await EnergyGenerationRecord.find({
+            SolarUnitId:id,
+            time:{ $gte: startDate, $lte: lastDate }
+        })
+
+        if (records.length === 0) {
+        return res.status(200).json({
+            capacityFactor: 0,
+            totalEnergy: 0,
+            totalHours: 0,
+        });
+        }
+
+        const totalEnergy = records.reduce(
+        (sum, r) => sum + r.energyGenerated,
+        0
+        );
+
+        const totalHours = records.length;
+
+        const theoreticalMax = (solarUnit.capasity* totalHours);
+
+        const capacityFactor =
+        theoreticalMax > 0
+            ? ((totalEnergy / theoreticalMax) * 100).toFixed(2)
+            : 0;
+
+        res.status(200).json({
+        period: "Last 7 days",
+        totalEnergy,
+        totalHours,
+        theoreticalMax,
+        capacityFactor: Number(capacityFactor),
+        });
+
+    }catch(error){
+        next(error)
+    }
+}

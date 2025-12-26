@@ -15,8 +15,8 @@ const DashboardPage =()=>{
         {id:solarunit?._id, groupBy:"date"},{ skip: !solarunit?._id });
     if(!solarunit?._id){
         return (
-            <div className="w-full bg-gray-100 mt-20 justify-center flex h-screen">
-                <span className="text-xl font-semibold text-blue-700">No solar unit found for this user.</span> 
+            <div className="w-full bg-gray-100 justify-center flex min-h-screen">
+                <span className="text-xl mt-20 font-semibold text-blue-700">No solar unit found for this user.</span> 
             </div>
         )
     }
@@ -44,7 +44,7 @@ const DashboardPage =()=>{
         return day.date>=sevendayago
     })
     return(
-        <div className="w-full min-h-screen bg-gray-100 overflow-y-scroll">
+        <div className="w-full min-h-screen bg-gray-100 overflow-y-auto">
             <div className="px-4 md:px-8 py-2 flex flex-col gap-4">
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
                     <div >
