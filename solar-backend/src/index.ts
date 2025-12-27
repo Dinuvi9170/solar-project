@@ -18,17 +18,27 @@ import { handleStripeWebhook } from './application/stripe/stripe.webhooks';
 
 const server= express();
 
-server.use(cors({origin:[
-  "http://192.168.8.193:5173",
+const allowedOrigins = [
   "https://solarix-energy-dinuvi.netlify.app",
-  "http://localhost:5173",
-  "http://192.168.8.193:8000",
-  "https://solarix-energy.onrender.com"
-],
+  "http://localhost:5173"
+];
+
+server.use(cors({
+  origin: function(origin, callback){
+    if(!origin) return callback(null, true);
+    if(!allowedOrigins.includes(origin)){
+      return callback(new Error("CORS not allowed for this origin"), false);
+    }
+    return callback(null, true);
+  },
   credentials: true,
-  methods: ["GET","POST","PUT","DELETE","OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
 }));
+
+server.options("*", cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
+
 
 server.use(LoggerMiddleware);
 
