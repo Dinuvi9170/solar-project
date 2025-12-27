@@ -25,7 +25,7 @@ export const syncEnergyRecords = async (): Promise<void> => {
         SolarUnitId: solarUnit._id
       }).sort({ time: -1 });
 
-      const apiUrl = `http://192.168.8.193:8001/api/energyRecords/solar-unit/${solarUnit.serialNumber}`;
+      const apiUrl = `https://solar-data-api.onrender.com/api/energyRecords/solar-unit/${solarUnit.serialNumber}`;
       const response = await fetch(apiUrl);
       if (!response.ok) continue;
 
