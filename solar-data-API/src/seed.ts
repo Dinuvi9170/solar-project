@@ -17,8 +17,10 @@ const seedData = async () => {
 
     const energyrecords: any[] = [];
 
-    const startDate = new Date("2025-10-01T06:00:00.000Z");
-    const endDate = new Date("2025-12-25T06:00:00.000Z");
+    const startDate = new Date();
+    const endDate = new Date();
+
+    startDate.setDate(endDate.getDate() - 60); 
 
     let currentDate = new Date(startDate);
 
