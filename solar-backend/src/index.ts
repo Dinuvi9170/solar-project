@@ -22,7 +22,9 @@ server.use(cors({origin:[
   "http://192.168.8.193:5173",
   "https://solarix-energy-dinuvi.netlify.app",
   "http://localhost:5173",
-  "http://192.168.8.193:8000"]}));
+  "http://192.168.8.193:8000",
+  "https://solarix-energy.onrender.com"
+]}));
 
 server.use(LoggerMiddleware);
 
