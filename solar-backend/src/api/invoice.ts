@@ -5,7 +5,7 @@ import { Authorization } from "./middleware/authorization";
 
 const InvoiceRouter = express.Router();
 
-InvoiceRouter.post('/generate',Authenticate,Authorization, GenerateInvoice);
+InvoiceRouter.post('/generate',Authenticate,GenerateInvoice);
 InvoiceRouter.get('/',Authenticate, getInvoicesforUser);
 InvoiceRouter.get('/stripe/:stripeInvoiceId',Authenticate, getInvoiceAmountFromStripe);
 InvoiceRouter.get('/:invoiceId',Authenticate, getInvoiceById);
