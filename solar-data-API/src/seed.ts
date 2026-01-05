@@ -6,7 +6,7 @@ import { connectDB } from "./infrastructure/db";
 import { EnergyGenerationRecord } from "./infrastructure/entity/energyGenerationRecords";
 
 const seedData = async () => {
-  const serialNumber = "SUN-001";
+  const serialNumber = "SUN-002";
 
   try {
     await connectDB();
