@@ -34,6 +34,10 @@ export const createCheckoutSession = async (req: Request, res: Response) => {
     },
   });
 
+  await Invoice.findByIdAndUpdate(invoice._id, {
+    stripePaymentIntentId: session.payment_intent,
+  });
+
   //Return client secret to frontend
   res.json({ clientSecret: session.client_secret });
 };
