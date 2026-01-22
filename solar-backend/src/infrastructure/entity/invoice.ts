@@ -16,6 +16,10 @@ const InvoiceSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        stripePaymentIntentId: {
+            type: String,
+            default: null,
+        },
         billingPeriodStart: { 
             type: Date, 
             required: true 
@@ -35,7 +39,7 @@ const InvoiceSchema = new mongoose.Schema(
         },
         paidAt: { 
             type: Date, 
-            default: Date.now 
+            default: null
         }
     },
     { timestamps: true }
